@@ -1,0 +1,114 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\linespread{2.0}
+
+\author{\sc{Group 15 }}
+\author{\sc{Yueyang Shen, Yibo Zhao and Xu Zhang}}
+\title{\bf{\sc{Vv557 Methods of Applied Mathematics II
+\\Assignment 2 Group 15}}}
+\date{\sc{20190314}}
+
+
+\begin{document}
+\maketitle{}
+\section{Exercise 2.1}
+In a distributional way, if we prove that $\emph{T}_{-\Delta g}\varphi\stackrel{n\to \infty}{\longrightarrow}\varphi(0)=\emph{T}_{\delta}\varphi$, then we can obtain $-\Delta g =\delta$.
+
+Calculating
+\begin{align*}
+\emph{T}_{-\Delta g}\varphi
+&= \int_{\mathbb{R}^{2}}\Delta \varphi(x)\frac{1}{2\pi}\log \left|x\right| dx\\
+& = \lim_{\varepsilon \to 0}\int_{\left|x\right| > \varepsilon}\Delta \varphi(x)\frac{1}{2\pi}\log \left|x\right| dx\\
+& = \frac{1}{2\pi}\Big[\int_{\left|x\right| > \varepsilon} \varphi(x)\Delta\log \left|x\right| dx+\int_{\left|x\right|=\varepsilon}(\log \left|x\right| \cdot \frac{\partial \varphi}{\partial \vec{n}}-\varphi\frac{\partial}{\partial \vec{n}}\cdot \log \left|x\right|)d\delta\Big]
+\end{align*}
+, where $\vec{n}$ is the normal derivative.
+
+Consider the problem in polar coordinate, $\left|x\right|=r$, $\frac{\partial}{\partial \vec{n}}=-\frac{\partial}{\partial r}$, and $\Delta \log\left|x\right|=\Delta\log (r)$=0. The first integral of the RHS in this equation can then be eliminated. We have 
+\begin{align*}
+\emph{T}_{-\Delta g}\varphi
+&= \frac{1}{2\pi}\int_{r=\varepsilon}\big(-\log(r) \cdot \frac{\partial \varphi}{\partial r}+\varphi\frac{\partial \log (r)}{\partial r}\big)d\sigma\\
+& = \frac{1}{2\pi}\int_{r=\varepsilon}\big(-\log(r) \cdot \frac{\partial \varphi}{\partial r}+\varphi \frac{1}{r}\big)d\sigma\\
+& =\frac{1}{2\pi}\cdot 2\pi\lim_{r=\varepsilon\to 0}\big(-r\log (r)\cdot \frac{\partial\varphi}{\partial r}+\varphi\big).
+\end{align*}
+Since $\lim_{r\to 0}r\log(r)=0$ and $\frac{\partial \varphi}{\partial r}$ is bounded as $\varphi$ is bounded, we can eliminate the first part of the limit and get
+$$
+\emph{T}_{-\Delta g}\varphi=\lim_{r\to 0}\varphi(r)=\emph{T}_{\delta}\varphi(r)
+$$
+, which gives
+$$
+-\Delta g=\delta.
+$$
+\section{Exercise 2.2}
+
+Consider this problem from distributional point of view, calculate
+\begin{align*}
+\emph{T}_{u_{tt}-u_{xx}}\varphi(x,t)
+& =\emph{T}_{u_{tt}}\varphi(x,t)-\emph{T}_{u_{xx}}\varphi(x,t)\\
+& = \int_{\mathbb{R}^{2}}u(x,t)\cdot\frac{\partial^{2}\varphi(x,t)}{\partial t^{2}}d\sigma-\int_{\mathbb{R}^{2}}u(x,t)\cdot\frac{\partial^{2}\varphi(x,t)}{\partial x^{2}}d\sigma
+\end{align*}
+Suggested from the $u(x,t)$ equation, $t > 0$, we can further derive the equation above as
+\begin{align*}
+\emph{T}_{u_{tt}-u_{xx}}\varphi(x,t)
+& =\emph{T}_{u_{tt}}\varphi(x,t)-\emph{T}_{u_{xx}}\varphi(x,t)\\
+& = \int_{\mathbb{R}^{2}}u(x,t)\cdot\frac{\partial^{2}\varphi(x,t)}{\partial t^{2}}d\sigma-\int_{\mathbb{R}^{2}}u(x,t)\cdot\frac{\partial^{2}\varphi(x,t)}{\partial x^{2}}d\sigma\\
+& = \frac{1}{2}\int_{-\infty}^{\infty}\int_{\left|x\right|}^{\infty}\frac{\partial^{2}\varphi(x,t)}{\partial t^{2}}dt dx-\frac{1}{2}\int_{0}^{\infty}\int_{-t}^{t}\frac{\partial^{2}\varphi(x,t)}{\partial t^{2}}dx dt\\
+& = \frac{1}{2}\Big[\int_{-\infty}^{\infty}\Big(\frac{\partial \varphi(x,t)}{\partial t}\Big)^{\infty}_{\left|x\right|}dx-\int_{0}^{\infty}\Big(\frac{\partial \varphi(x,t)}{\partial x}\Big)^{t}_{-t}dt\Big]\\
+& = \frac{1}{2}\Big[-\int_{-\infty}^{\infty}\Big(\frac{\partial \varphi(x,\left|x\right|)}{\partial t}\Big)dx-\int_{0}^{\infty}\Big(\frac{\partial \varphi(t,t)}{\partial x}\Big)dt+\int_{0}^{\infty}\Big(\frac{\partial \varphi(-t,t)}{\partial x}\Big)dt\Big]\\
+& = \frac{1}{2}\Big[-\int_{0}^{\infty}\Big(\frac{\partial \varphi(x,x)}{\partial t}\Big)dx-\int_{-\infty}^{0}\Big(\frac{\partial \varphi(x,-x)}{\partial t}\Big)dx-\int_{0}^{\infty}\Big(\frac{\partial \varphi(t,t)}{\partial x}\Big)dt\\
++\int_{0}^{\infty}\Big(\frac{\partial \varphi(-t,t)}{\partial x}\Big)dt\Big].
+\end{align*}
+Since
+$$
+\frac{d}{dy}\varphi(y,y)=\frac{\partial \varphi}{\partial x}(y,y,)+\frac{\partial \varphi}{\partial t}(y,y)
+$$
+$$
+\frac{d}{dy}\varphi(-y,y)=-\frac{\partial \varphi}{\partial x}(-y,y)+\frac{\partial \varphi}{\partial t}(-y,y)
+$$
+, we have
+\begin{align*}
+\emph{T}_{u_{tt}-u_{xx}}\varphi(x,t)
+& =\frac{1}{2}\Big[-\int_{0}^{\infty}\frac{d}{dy}\varphi(y,y)dy+\int_{0}^{\infty}\frac{d}{dy}\varphi(-y,y)dy\Big]\\
+& = \frac{1}{2}\Big[-0+\varphi(0,0)-0+\varphi(0,0)\Big]\\
+& = \varphi(0,0)= T_{\delta}\varphi.
+\end{align*}
+Then,
+$$
+u_{tt}-u_{xx}=\delta.
+$$
+\section{Exercise 2.3}
+Since we have
+$$
+\mathcal{P}(\frac{1}{x})(\varphi):= \lim_{\varepsilon \to 0} \int_{\left|x\right|\geqslant \varepsilon} \frac{\varphi(x)}{x}dx
+,
+$$ 
+weak derivative gives that
+\begin{align*}
+\frac{d}{dx}\mathcal{P}(\frac{1}{x})(\varphi)
+& = - \lim_{\varepsilon \to 0} \int_{\left|x\right|\geqslant \varepsilon}\frac{\varphi' (x)}{x}dx\\
+& =- \lim_{\varepsilon \to 0}\Big[\int_{-\infty}^{-\varepsilon}\frac{\varphi'(x)}{x}dx+\int_{\varepsilon}^{\infty}\frac{\varphi'(x)}{x}dx\Big]\\
+& = - \lim_{\varepsilon \to 0}\Big[\int^{\infty}_{\varepsilon}\frac{\varphi'(-x)}{-x}dx+\int_{\varepsilon}^{\infty}\frac{\varphi'(x)}{x}dx\Big]\\
+& = -\lim_{\varepsilon \to 0} \int_{\varepsilon}^{\infty}\frac{\varphi'(x)-\varphi'(-x)}{x}dx\\
+&=-\lim_{\varepsilon \to 0}\Bigg[\Big[\frac{\varphi(x)+\varphi(-x)}{x}\Big]_{\varepsilon}^{\infty}+\int_{\varepsilon}^{\infty}\frac{\varphi(x)+\varphi(-x)}{x^{2}}dx\Bigg] \\
+&= -\lim_{\varepsilon \to 0}\int_{\varepsilon}^{\infty}\frac{\varphi(x)+\varphi(-x)}{x^{2}}dx+\lim_{\varepsilon\to0}\Big[ \frac{2\varphi(0)}{\varepsilon}\Big].\tag{1}
+\end{align*}
+
+
+Then consider the LHS that
+\begin{align*}
+\mathcal{P}(\frac{1}{x^{2}})(\varphi)& =\lim_{\varepsilon \searrow 0} \int_{\left|x\right|>\varepsilon}\frac{\varphi(x)-\varphi(0)}{x^{2}}\\
+&=\lim_{\varepsilon \searrow 0}\Bigg[\int_{\varepsilon}^{\infty}\frac{1}{x^{2}}\Big(\varphi(x)-\varphi(0)\Big)dx+\int_{-\infty}^{-\varepsilon}\frac{1}{x^{2}}\Big(\varphi(x)-\varphi(0)\Big)dx\Bigg]\\
+& = \lim_{\varepsilon \searrow 0}\Bigg[\int_{\varepsilon}^{\infty}\frac{1}{x^{2}}\Big(\varphi(x)-\varphi(0)\Big)dx+\int_{\varepsilon}^{\infty}\frac{1}{x^{2}}\Big(\varphi(-x)-\varphi(0)\Big)dx\Bigg]\\
+& = \lim_{\varepsilon \searrow 0}\int_{\varepsilon}^{\infty}\frac{\varphi(x)+\varphi(-x)-2\varphi(0)}{x^{2}}dx\\
+&= \lim_{\varepsilon \searrow 0}\int_{\varepsilon}^{\infty}\frac{\varphi(x)+\varphi(-x)}{x^{2}}dx-\lim_{\varepsilon \searrow 0}\int_{\varepsilon}^{\infty}\frac{2\varphi(0)}{x^{2}}dx\\
+& = \lim_{\varepsilon \searrow 0}\int_{\varepsilon}^{\infty}\frac{\varphi(x)+\varphi(-x)}{x^{2}}dx-2\varphi(0)\lim_{\varepsilon\searrow 0}(\frac{1}{\varepsilon}).\tag{2}
+\end{align*}
+From (1) and (2) we can see that
+$$
+\frac{d}{dx}\mathcal{P}(\frac{1}{x})(\varphi)=-\mathcal{P}(\frac{1}{x^{2}})(\varphi).
+$$
+
+
+\end{document}
