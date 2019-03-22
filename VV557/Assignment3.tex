@@ -1,0 +1,211 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+
+\author{\sc{Group 15}}
+\author{\sc{Yueyang Shen, Yibo Zhao and Xu Zhang}}
+\title{\bf{\sc{Vv557 Methods of Applied Mathematics II
+\\Assignment 3 Group 15}}}
+\date{\sc{20190321}}
+
+
+\begin{document}
+\maketitle{}
+\begin{spacing}{1.5}
+\section*{Exercise 3.1}
+
+\subsection*{i)}
+\begin{align*}
+(\mathcal{F} \ \Pi_{a,b}) (\xi)
+	& = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} e^{-ix\xi} \Pi_{a,b}(x) dx \\
+	& = \frac{1}{\sqrt{2\pi}} \int_{a}^{b} e^{-ix\xi} dx \\
+	& = \frac{1}{\sqrt{2\pi}} \frac{i}{\xi} \left( e^{-ib\xi} - e^{-ia\xi} \right)
+\end{align*}
+
+\subsection*{ii)}
+\begin{align*}
+\widehat{ e^{-a\left|x\right|} }
+	& = \frac{1}{\sqrt{2\pi}} \left(\int_{0}^{\infty} e^{-(a+i\xi)x} dx + \int_{-\infty}^{0} e^{(a-i\xi)x} dx \right) \\
+	& = \frac{1}{\sqrt{2\pi}} \left(\frac{1}{a+i\xi} + \frac{1}{a-i\xi} \right) \\
+	& = \frac{1}{\sqrt{2\pi}} \frac{2a}{a^2+\xi^2}
+\end{align*}
+
+\subsection*{iii)}
+We first consider the derivative of $f(x) = e^{-ax^2}$:
+$$
+g(x) = -2axe^{-ax^2} = -2ai (-ix)f(x) = \frac{d}{dx} f(x)
+$$
+Then
+$$
+\widehat{g}(\xi)=\widehat{f'}(\xi)=i\xi\widehat{f}(\xi), \ \ \widehat{g}(\xi) = -2ai \widehat{(-ix)f} (\xi) = -2ai\hat{f}'(\xi)
+$$
+so
+$$
+\xi\hat{f}(\xi) = -2a \hat{f}'(\xi)
+$$
+Furthermore,
+\begin{align*}
+\hat{f}(0)
+	& = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} e^{-ix\cdot0} e^{-ax^2} dx \\ 
+	& = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} e^{-\frac{x^2}{2}} dx \cdot \frac{1}{\sqrt{2a}} \\
+	& = \frac{1}{\sqrt{2a}}
+\end{align*}
+This leads to
+$$
+\hat{f}(\xi) = \frac{1}{\sqrt{2a}} e^{-\frac{\xi^2}{4a}}
+$$
+
+\subsection*{iv)}
+\begin{align*}
+\widehat{ \cos(x) e^{-x^2} }
+	& = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} e^{-ix\xi} \left( \frac{e^{ix} + e^{-ix}}{2} e^{-x^2}\right) dx  \\
+	& = \frac{1}{2\sqrt{2\pi}} \left( \int_{\mathbb{R}} e^{-ix(\xi-1)} e^{-x^2} dx + \int_{\mathbb{R}} e^{-ix(\xi+1)} e^{-x^2} dx \right)  \\
+	& = \frac{1}{2} \left[ e^{-\frac{(\xi-1)^2}{4}} + e^{-\frac{(\xi+1)^2}{4}} \right]
+\end{align*}
+
+\subsection*{v)}
+Denote $f(x) = \cos(x) \cdot \frac{1}{4+x^2}$ and $g(x) =\frac{1}{4+x^2} $, using the property of convolution
+$$
+\widehat{ f }(x) = \sqrt{2\pi} \widehat{ \cos(2x) } * \widehat{g}(x)  \\
+$$
+From ii), we know that $\mathcal{F} \left( \frac{1}{2} e^{-2\left|x\right|} \right) = \frac{1}{\sqrt{2\pi}}  \frac{2}{4+\xi^2} $. We denote this function as $h(x)$
+\begin{align*}
+\widehat{ f }(x)
+	& = \frac{1}{\sqrt{2\pi}} \widehat{ \cos(2x) } * \widehat{g}(x) \\
+	& = \frac{1}{\pi} \widehat{ \cos(2x) } * \widehat{\widehat{h}}(\xi) \\
+	& = \left[\delta (\xi -2) + \delta (\xi +2) \right]* h(-\xi) \\
+	& = \frac{1}{2} \left( e^{-2\left|\xi+2\right|} + e^{-2\left|\xi-2\right|} \right)
+\end{align*}
+
+\subsection*{vi)}
+\begin{align*}
+\mathcal{F} \left(xe^{-x^2} * e^{-x^2} \right)
+	& = \frac{1}{\sqrt{2\pi}} \widehat{ xe^{-x^2} } \cdot \widehat{ e^{-x^2} } \\
+	& = \frac{1}{\sqrt{2\pi}} \widehat{ \left(-\frac{1}{2} e^{-x^2}\right)' }  \cdot \widehat{ e^{-x^2} }\\
+	& = \frac{1}{\sqrt{2\pi}} \left(-\frac{1}{2} i\xi\right) \frac{1}{2a} e^{-\xi^2 /2a} \\
+	& = -\frac{i\xi}{4a\sqrt{2\pi}} e^{-\xi^2 /2a}
+\end{align*}
+
+
+
+\section*{Exercise 3.2}
+\subsection*{i)}
+\begin{align*}
+\hat{T}_g \varphi
+	& = T_g \hat{\varphi} = \int_{-\infty}^{\infty}g(\xi)\hat{\varphi}(\xi)d\xi \\ 
+	& = \frac{1}{\sqrt{2\pi}} \int_{1}^{\infty} e^{-\epsilon\xi} \int_{-\infty}^{\infty} e^{-ix\xi}\varphi(x)dxd\xi \\
+	& = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(x) \int_{1}^{\infty} e^{-(\epsilon+ix)\xi}d\xi dx \\
+	& = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(x) \left[ \frac{e^{-\epsilon}}{\epsilon+ix}e^{-ix}\right]dx
+\end{align*}
+Therefore, 
+$$
+\hat{g} (\xi) =\frac{1}{\sqrt{2\pi}} \frac{e^{-(\epsilon+i\xi)}}{\epsilon+i\xi}
+$$
+
+\subsection*{ii)}
+\begin{align*}
+\hat{T}_g \varphi
+	& = T_g \hat{\varphi} = \int_{-\infty}^{\infty}g(\xi)\hat{\varphi}(\xi)d\xi \\ 
+	& = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \sin(3\xi-2) \int_{-\infty}^{\infty} e^{-ix\xi}\varphi(x)dxd\xi \\
+	& = \frac{1}{\sqrt{2\pi}} \frac{1}{2i} \int_{-\infty}^{\infty} \left[e^{i(3\xi-2)} - e^{-i(3\xi-2)}\right] \int_{-\infty}^{\infty} e^{-ix\xi}\varphi(x)dxd\xi \\
+	& = \frac{1}{\sqrt{2\pi}} \frac{1}{2i} \int_{-\infty}^{\infty} \varphi(x) \int_{-\infty}^{\infty} \left[e^{i(3\xi-2) - ix\xi} - e^{-i(3\xi-2)-ix\xi} \right]d\xi dx
+\end{align*}
+$$
+\int_{-\infty}^{\infty} e^{i(3\xi-2) - ix\xi}d\xi = e^{-2i} 2\pi \delta(\xi-3)
+$$
+$$
+\int_{-\infty}^{\infty}e^{-i(3\xi-2)-ix\xi}d\xi = e^{2i} 2\pi \delta(\xi+3)
+$$
+Therefore,
+$$
+\hat{g} (\xi) = \frac{\sqrt{2\pi}}{2i} \left[e^{-2i}\delta(\xi-3) -e^{2i}\delta(\xi+3) \right]
+$$
+
+\subsection*{iii)}
+\begin{align*}
+\hat{T}_g \varphi
+	& = T_g \hat{\varphi} = \int_{-\infty}^{\infty}g(\xi)\hat{\varphi}(\xi)d\xi \\ 
+	& = \int_{-\infty}^{\infty} \xi^2 \cos(\xi) \hat{\varphi}(\xi)d\xi \\
+	& = \int_{-\infty}^{\infty} \varphi(x) \int_{-\infty}^{\infty} \xi^2 \cos(\xi) e^{-ix\xi} d\xi dx
+\end{align*}
+To calculate $\int_{-\infty}^{\infty} \xi^2 \cos(\xi) e^{-ix\xi} d\xi$, we have the following
+$$
+\int_{-\infty}^{\infty} \xi^2 \frac{e^{i\xi}+e^{-i\xi}}{2} e^{-ix\xi} d\xi = \frac{1}{2} \int_{-\infty}^{\infty}  \xi^2 e^{-i(x-1)\xi} d\xi + \frac{1}{2} \int_{-\infty}^{\infty}  \xi^2 e^{-i(x+1)\xi} d\xi
+$$
+\begin{align*}
+\hat{T}_g \varphi
+	& = \frac{1}{2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  \xi^2 e^{-i(x-1)\xi} \varphi(x) dx d\xi + \frac{1}{2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  \xi^2 e^{-i(x+1)\xi} \varphi(x) dx d\xi \\
+	& = \frac{1}{2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  (-1)  e^{-i(x-1)\xi} \varphi''(x) dx d\xi + \frac{1}{2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} (-1) e^{-i(x+1)\xi} \varphi''(x) dx d\xi \\
+	& = \sqrt{\frac{\pi}{2}} \left(\varphi''(1) + \varphi''(-1)\right)
+\end{align*}
+
+\subsection*{iv)}
+\begin{align*}
+\hat{T}_g \varphi
+	& = T_g \hat{\varphi} = \int_{-\infty}^{\infty} g(\xi)\hat{\varphi}(\xi)d\xi \\ 
+	& = \frac{1}{\sqrt{2\pi}} \int_{2}^{\infty} \int_{-\infty}^{\infty} e^{-ix\xi} \xi \varphi(x)dx d\xi = \lim\limits_{R\to \infty}\int_{-\infty}^{\infty} \varphi(x)  \int_{2}^{R} e^{-ix\xi}\xi d\xi dx \\
+	& = \frac{1}{\sqrt{2\pi}} \lim\limits_{R\to \infty}\int_{-\infty}^{\infty} \varphi(x)  \left[ \frac{2i}{-x} + \frac{1}{x^2} \right] e^{-x\xi} \Big|_2^R dx \\
+	& = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(x)  \left[ - \left( \frac{2i}{x} + \frac{1}{x^2} \right) e^{-2ix}  \right] dx \\
+\end{align*}
+Therefore,
+$$
+\hat{g} (\xi) = -\frac{1}{\sqrt{2\pi}} \left( \frac{2i}{\xi} + \frac{1}{\xi^2} \right) e^{-2i\xi}
+$$
+
+\subsection*{v)}
+$$
+\hat{T}_g \varphi = T_g \hat{\varphi} = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(x) \int_{-\infty}^{\infty} \xi^2 \delta(\xi-1) e^{-ix\xi} d\xi dx = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \varphi(x) e^{-ix} dx
+$$
+So
+$$
+\hat{g} (\xi) = \frac{1}{\sqrt{2\pi}} e^{-i\xi}
+$$
+
+
+\section*{Exercise 3.3}
+Consider the basic properties of Fourier transform:
+$$
+\mathcal{F} \left[ D^\alpha (1- ix)^\beta \varphi(x) \right] (\xi) = (i\xi) ^\alpha D^\beta (\mathcal{F} \varphi) (\xi)
+$$
+we have
+$$
+\widehat{u_{tt} } (\xi) = -\xi^2 \hat{u} (\xi) \Rightarrow \widehat{u_{tt} } (\xi) + \xi^2 \hat{u } (\xi) =0
+$$
+To solve this ODE in the t-variable, let $u(\xi,t) = A\cos(\xi t) + B\sin(\xi t)$. The boundary values are:
+$$
+\hat{u} (\xi, 0) = \hat{f} (\xi), \ \ \hat{u} _t (\xi,0) =g(x)
+$$
+$\Rightarrow$
+$$
+\left\{
+\begin{aligned}
+& A = \hat{f} (\xi)  \\
+& -\xi A \sin(\xi t) + \xi B \cos(\xi t) \Big|_{t=0} = \hat{u} _t(\xi, t) = \hat{g} (\xi)\Rightarrow B = \frac{\hat{g}(\xi)}{\xi}
+\end{aligned}
+\right.
+$$
+So we have the solution
+$$
+\hat{u} (\xi,t) = \hat{f}  (\xi) \cos(\xi t) + \frac{\hat{g}(\xi)}{\xi} \sin(\xi t)
+$$
+To calculate the inverse Fourier transform
+\begin{align*}
+u(x,t) 
+	&= \hat{\hat{u}}(-x,t) = \mathcal{F}\left[ \hat{f} (-\xi) \cos(-\xi t) + \frac{\hat{g}(-\xi)}{-\xi}\sin(-\xi t) \right] \\
+	& = \mathcal{F}\left[ \hat{f} (-\xi) \cos(-\xi t)\right] + \mathcal{F}\left[ \frac{\hat{g}(-\xi)}{\xi}\sin(\xi t) \right] \\
+	& = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} \hat{f} (-\xi) \cos(-\xi t) e^{-i\xi t} d\xi + \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} \frac{\hat{g}(-\xi)}{\xi}\sin(\xi t) e^{-i\xi t} d\xi \\
+	& = \frac{1}{\sqrt{2\pi}}  \int_{\mathbb{R}} \hat{f} (-\xi) \cdot \pi \left[ \delta(x+\xi) + \delta(x-\xi) \right] e^{-i\xi t} d\xi \\
+	& \ \ \ \ + \frac{1}{\sqrt{2\pi}}  \int_{\mathbb{R}} \frac{\hat{g}(-\xi)}{\xi} \cdot \pi \left[ \delta(x+\xi) - \delta(x-\xi) \right] e^{-i\xi t} d\xi
+\end{align*}
+
+
+
+
+
+
+
+\end{spacing}
+\end{document}
