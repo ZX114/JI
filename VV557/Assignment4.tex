@@ -1,0 +1,125 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+
+\author{\sc{Group 15}}
+\author{\sc{Yueyang Shen, Yibo Zhao and Xu Zhang}}
+\title{\bf{\sc{Vv557 Methods of Applied Mathematics II
+\\Assignment 4 Group 15}}}
+\date{\sc{20190328}}
+
+
+\begin{document}
+\maketitle{}
+\begin{spacing}{1.5}
+\section*{Exercise 4.1}
+
+\subsection*{i)}
+$L = \frac{d^4}{dx^4}$, $a_0=0, \ a_1=0, \ a_2=0, \ a_3=0, \ a_4=1$ \\
+The problem $\{0;0,0,0,1\}$ has a solution with the form of
+$$
+y=Ax^3+Bx^2+Cx+D
+$$
+\begin{align*}
+& u1: \ u_1(0)=1 \Rightarrow u_1(x) = 1\\
+& u2: \ u_2'(0)=1 \Rightarrow u_2(x) = x\\
+& u3: \ u_3''(0)=1 \Rightarrow u_3(x) = \frac{1}{2}x^2\\
+& u4: \ u_4'''(0)=1 \Rightarrow u_4(x) = \frac{1}{6}x^3
+\end{align*}
+which give $u(x) = 1 \cdot u_4(x) = \frac{1}{6}x^3$, and $u_\xi(x) = u(x-\xi) = \frac{1}{6}(x-\xi)^3$. And the corresponding causal fundamental solution is
+$$
+E(x;\xi) = \frac{1}{6} H(x-\xi) (x-\xi)^3
+$$
+
+\subsection*{ii)}
+$$
+g = \frac{1}{6} H(x-\xi) (x-\xi)^3 + Ax^3 + Bx^2 + Cx + D
+$$
+Apply boundary conditions
+\begin{align*}
+& g(0,\xi) = D = 0 \\
+& g(1,\xi) = \frac{1}{6} (1-\xi)^3 + A + B + C = 0 \Rightarrow C = \frac{\xi(\xi-1)(\xi-2)}{6} \\
+& g''(0,\xi) = 2B = 0 \\
+& g''(1,\xi) = 1 - \xi + 6A =0 \Rightarrow A = \frac{\xi -1 }{6}
+\end{align*}
+Therefore, 
+$$
+g = \frac{\xi-1}{6}x^3 + \frac{\xi(\xi-1)(\xi-2)}{6}x
+$$
+
+
+\section*{Exercise 4.2}
+\subsection*{i)}
+$L = -\frac{d^2}{dx^2} - k^2$, to construct a causal fundamental solution, we first solve $\{ 0;0,-1 \}$. \\
+$$
+-\lambda^2 - k^2 = 0 \Rightarrow \lambda = \pm i k
+$$
+which gives $u(x) = C_1 \sin(kx) + C_2 \cos(kx) $
+\begin{align*}
+& u_1: u_1(0) = 1 \Rightarrow u_1(x) = \cos(kx) \\
+& u_2: u_1'(0) = 1 \Rightarrow u_2(x) = \frac{1}{k} \sin(kx) 
+\end{align*}
+We know that
+$$
+\left\{
+\begin{aligned}
+& u_\xi(x) = u(x-\xi) \\
+& u(x) = 0 \cdot u_1 + (-1) \cdot \frac{1}{k} \sin(kx)
+\end{aligned}
+\right.
+$$
+$\Rightarrow \  E(x,\xi) = -\frac{1}{k} \sin k(x-\xi) H(x-\xi)$
+
+\subsection*{ii)}
+$$
+g = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + C_1\cos kx + C_2\sin kx
+$$
+Apply boundary conditions
+\begin{align*}
+& g(0,\xi) = 0+ C_1 = 0  \Rightarrow C_1=0\\
+& g(1,\xi) = -\frac{1}{k} \sin k(1-\xi) + C_2\sin k = 0 \Rightarrow C_2 = \frac{\sin k(1-\xi)}{k \sin k}
+\end{align*}
+Therefore,
+$$
+g(x;\xi) = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + \frac{\sin k(1-\xi)}{k \sin k} \sin kx
+$$
+
+\subsection*{iii)}
+Using the Fourier transform 
+$$
+Lu = \delta(x) \Rightarrow \xi^2 \hat{u} - k^2 \hat{u} = \frac{1}{\sqrt{2\pi}} \Rightarrow \hat{u}=\frac{1}{\sqrt{2\pi}} \frac{1}{\xi^2 - k^2}
+$$
+Then $u(x)$ is simply the inverse Fourier transform of $\hat{u}$
+\begin{align*}
+& \hat{u}(x)  =\frac{1}{\sqrt{2\pi}} \frac{1}{\xi^2 - k^2} = \frac{i}{4k} \sqrt{\frac{2}{\pi}} \left( \frac{1}{i(\xi-k)} - \frac{1}{i(\xi+k)} \right) \\
+& u(x) = \frac{i}{4k} sgn(x) \left( e^{ikx} -e^{-ikx} \right) = \frac{i}{2k} sgn(x) \sin kx \\
+\Rightarrow \ & E(x,\xi) = \frac{i}{2k} sgn(x-\xi) \sin k(x-\xi)
+\end{align*}
+
+
+\subsection*{iv)}
+$$
+g = \frac{i}{2k} sgn(x-\xi) \sin k(x-\xi) + C_1\cos kx + C_2\sin kx
+$$
+Apply boundary conditions
+\begin{align*}
+& g(0,\xi) = i\frac{\sin k\xi}{2k} + C_1 = 0  \Rightarrow C_1=-i\frac{\sin k\xi}{2k}\\
+& g(1,\xi) = i\frac{\sin k(1-\xi)}{2k} + C_1 \cos(k) + C_2 \sin(k) \Rightarrow C_2 =i \frac{\sin k(1-\xi) - \sin k\xi \cos k}{2k\sin k}
+\end{align*}
+Therefore,
+$$
+g(x;\xi) = -\frac{sgn(\xi-x) \sin k(\xi-x)}{2k} + -i\frac{\sin k\xi}{2k} \cos kx +i \frac{\sin k(1-\xi) - \sin k\xi \cos k}{2k\sin k}\sin kx
+$$
+
+
+
+
+
+
+
+
+\end{spacing}
+\end{document}
