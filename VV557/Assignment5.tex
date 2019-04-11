@@ -1,0 +1,175 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+
+\author{\sc{Group 15}}
+\author{\sc{Yueyang Shen, Yibo Zhao and Xu Zhang}}
+\title{\bf{\sc{Vv557 Methods of Applied Mathematics II
+\\Assignment 5 Group 15}}}
+\date{\sc{20190411}}
+
+
+\begin{document}
+\maketitle{}
+\begin{spacing}{1.5}
+\section*{Exercise 5.1}
+$L=\frac{d^2}{dx^2}, \ 0<x<1 , \ B_1u = u(0)$. The conjunct is $J(u,v) \Big|_0^1 = \left( vu'-uv'\right) \Big|_0^1=v(1) u'(1) - u(1)v'(1)-v(0)u'(0)$.
+\begin{align*}
+M^* 
+& = \left\lbrace v\in C^2\left( [0,1] \right) : \ J(u,v)\Big|_0^1 = 0  \right\rbrace   \\
+&= \left\lbrace v\in C^2\left( [0,1] \right) : \ B_1^*v=0, \ B_2^*v=0, \ B_3^*v=0  \right\rbrace
+\end{align*}
+where $\ B_1^*v=v(1), \ B_2^*v=v'(1), \ B_3^*v=v(0)$
+
+\section*{Exervise 5.2}
+\subsection*{i)}
+$L = \frac{d^4}{dx^4}, \ 0<x<1, \ B_1u=u(0) , \ B_2u=u'''(0), \ B_3u=u(1), \ B_4(u) = u''(1). \ Lu=0 \  \Rightarrow \ u(x) = Ax^3 + Bx^2 + Cx + D$. \\
+Plugging in boundary conditions at $x=0: \ u(0)=0, \ u'''(0)=0 \ \Rightarrow g(x,\xi) = Bx^2 +Cx, \ x<\xi$. \\ 
+Plugging in boundary conditions at $x=1: \ u(1)=0, \ u''(1)=0 \ \Rightarrow  g(x,\xi) = Ax^3 - 3Ax^2 +Dx + (2A-D), \ x>\xi$. \\ 
+For the jump condition and continuity: 
+$$
+\left\{
+\begin{aligned}
+& A = 1  \\
+& 6A\xi-6A = 2B \\
+& 2B\xi+C = 3A\xi^2-6A\xi+D \\
+& B\xi^2 +C\xi = \xi^3 - 3\xi^2 +D\xi +(2-D)
+\end{aligned}
+\right.
+\Rightarrow
+\left\{
+\begin{aligned}
+& A = 1  \\
+& B = 3\xi-3 \\
+& C = \xi^2 +2 -3\xi^2 \\
+& D = \xi^3 + 2
+\end{aligned}
+\right.
+$$
+Therefore, 
+$$
+g(x,\xi) = \left\{
+\begin{aligned}
+& \left(3\xi - 3\right)x^2 + \left( \xi^3 +2 -3\xi^2\right) x   &x<\xi\\
+&  x^3 - 3x^2 + \left(\xi^3+2\right)x + \left(2-\xi^3-2\right)  &x>\xi\\
+\end{aligned}
+\right.
+$$
+
+\subsection*{ii)}
+\begin{align*}
+J(x,v)\Big|_0^1 & = <v,Lu> - <L^*v,u> = \int_{0}^{1} v \frac{d^4}{dx^4} udx - \int_{0}^{1} u\frac{d^4}{dx^4} v dx \\
+& = v\frac{d^3}{dx^3} u \Big|_0^1 - v' \frac{d^2}{dx^2} u \Big|_0^1 + v''\frac{d}{dx} u \Big|_0^1 - v'''u\Big|_0^1 \\
+& = v(1)u'''(1) + v'(0) u''(0) + v''(1)u(1) - v''(0)u'(0)
+\end{align*}
+Therefore the adjoint boundary conditions are 
+$$
+B_1v = v(1), \ B_2v = v'(0) , \ B_3v = v''(1) , \ B_4v = v''(0)
+$$
+Similarly, we have the green's function $Ax^3+Bx^2+Cx+D$, and 
+$$
+g^*(x,\xi) = \left\{
+\begin{aligned}
+& Bx^3 +C   &x<\xi\\
+& Ax^3 + (-3Ax^2) +Dx +2A - D &x>\xi\\
+\end{aligned}
+\right.
+$$
+
+$$
+\left\{
+\begin{aligned}
+& A = \frac{1}{12-6\xi}  \\
+& B = \frac{1}{12-6\xi} - \frac{1}{6} \\
+& C = -\frac{1}{3} \xi^3 + \frac{3\xi^2+2-6\xi}{12-6\xi} + \frac{1}{2}\xi^2 \\
+& D = -\frac{1}{2} \xi^2 + \frac{6\xi}{12-6\xi} \\
+\end{aligned}
+\right.
+$$
+
+\subsection*{iii)}
+By the reciprocity principle, since $g \neq g^*$, we do not have $g(x,\xi) = g(\xi,x) $ or we can simply replace $\xi$ by $x$ in i) and see that is not the case.
+
+\section*{Exercise 5.3}
+$L = -\frac{d^3}{dx^3} -1$
+$$
+(LT)\varphi = -T''(\varphi) - T(\varphi) = - T(\varphi'') - T(\varphi) = T(L^*\varphi) \Rightarrow L^* = -\frac{d^2}{dx^2} -1 
+$$
+
+\begin{align*}
+J(u,v) \Big|_{-\pi}^\pi 
+& =  \int_{-\pi}^{\pi} vLu - uL^*vdx = \int_{-\pi}^{\pi} uv'' - vu''dx  \\
+& = uv' - vu' \Big|_{-\pi}^\pi = \left[ u(\pi) - u(-\pi) \right] v'(\pi) + u(-\pi) v'(\pi)  \\ 
+&- \left[ u'(\pi)  - u'(-\pi) \right] v(\pi) -u'(-\pi) v(\pi) - u(-\pi) v'(-\pi) + v(-\pi)u'(-\pi) \\ 
+& = \left[ u(\pi) - u(-\pi) \right] v'(\pi) - \left[ u'(\pi)  - u'(-\pi) \right] v(\pi) - \left[ v(\pi) - v(-\pi) \right] u'(-\pi) \\
+&+ \left[ v'(-\pi) -v'(-\pi)\right]u(-\pi) \\  
+\end{align*}
+Solve the homogeneous problem $L^*u=0, \ -\frac{d^2v}{dx^2} - v =0$ with: $B_1^*v = v(\pi) - v(-\pi), \ B_1^* = v'(-\pi) - v'(-\pi) \Rightarrow v^{(1)}(x)  = \cos(x), \ v^{(2)} (x) = \sin(x)$
+Solvability conditions:
+\begin{align*}
+& \int_{-\pi}^{\pi} f(x) \cos(x)dx = \gamma_1(-\sin\pi) - \gamma_2 \cos\pi = \gamma_2 \\
+& \int_{-\pi}^{\pi} f(x) \sin(x)dx = \gamma_1(-\cos\pi) - \gamma_2 \sin\pi = -\gamma_1
+\end{align*}
+Therefore $\gamma_1 = \gamma_2 =0 $ gives
+$$
+\int_{-\pi}^{\pi} f(x) \cos(x)dx =\int_{-\pi}^{\pi} f(x) \sin(x)dx =0
+$$
+Because $\sin x, \ \cos x$ are odd and even functions respectively, the integrations equal zero only if $f(x)$ is zero. This means that there should be no forcing.
+
+
+\section*{Exercise 5.4}
+$$
+(LT)\varphi = T''\varphi + \pi^2 T \varphi = T(\varphi'') + T\pi^2\varphi \Rightarrow L^* = \frac{d^2}{dx^2} + \pi^2
+$$
+\begin{align*}
+J(u,v) \Big|_0^1 
+& = \int_{0}^{1} vLu - uL^*vdx = (vu'-uv')\Big|_0^1\\
+& = v(1) B_2u - v'(1) B_1u - u'(0) \left[v(1) + v(0) \right] + u(0) \left[v'(1) + v'(0)\right]
+\end{align*}
+$\Rightarrow B_1^*v = v'(1) +v'(0) , \ B_2^*v=v(1) +v(0)$ \\
+Together $L^*u=0 \ \& \  B_1^*v = v'(1) +v'(0) , \ B_2^*v=v(1) +v(0)$. We have, 
+$$
+v^{(1)}(x) = \cos(\pi x), \ v^{(2)} (x) = \sin(\pi x)
+$$
+Since $Lw=v$,
+$$
+w^{(1)} (x) = \frac{\cos x}{\pi} + A \cos(\pi x) + B  \sin(\pi x), \ 
+w^{(2)} (x) = \frac{\sin x}{\pi} + C \cos(\pi x) + D  \sin(\pi x)
+$$
+
+$g_M = E(x,\xi) - \sum_{i=1}^{2}v^{(i)}(\xi) w^{(i)}(x) + u_{homo}$
+
+
+\section*{Exercise 5.5}
+\subsection*{i)}
+$L = \frac{d^4}{dx^4}, \ 0<x<1, \ B_1u=u''(0) , \ B_2u=u'''(0), \ B_3u=u''(1), \ B_4(u) = u'''(1). \ Lu=0 \  \Rightarrow \ u(x) = Ax^3 + Bx^2 + Cx + D$. \\
+Plugging in the boundary conditions. The nontrivial solution is 
+$$
+u(x) = Cx+D  \ \ \ \ 0<x<1
+$$
+
+\subsection*{ii)}
+$$
+(LT) \varphi = T(\varphi^{(4)}) = T(L^*\varphi) \Rightarrow L^* = \frac{d^4}{dx^4}
+$$
+\begin{align*}\
+J(u,v)\Big|_0^1 
+& = \int_{0}^{1} vLudx - \int_{0}^{1} uL^*vdx  \\
+& = v(1) u'''(1) - v'(1)u''(1) + v''(1) u'(1) -  v'''(1)u(1)  \\
+& -  v(0) u'''(0) - v'(0)u''(0) + v''(0) u'(0) - v'''(0) u(0) 
+\end{align*}
+Therefore,$ B_1^*v = v''(1) =0 , \ B_2^*v = v'''(1) = 0 \ B_3^*v = v''(0) = 0 , \ B_4^*v = v'''(0) = 0$. \\
+So the problem is self-adjoint.
+
+\subsection*{iii)}
+$L^*v=0, \ B_1^*v = 0 , \ B_2^*v = 0 \ B_3^*v = 0 , \ B_4^*v = 0$
+$$
+\Rightarrow v= Cx+D \ v^{(1)} = 1 \ v^{(2)} = x
+$$
+First consider $LE=\delta(x-\xi)$, $E(x,\xi) = H(x-\xi) \frac{1}{6} (x-\xi)^3$
+
+\end{spacing}
+\end{document}
