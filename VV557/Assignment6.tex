@@ -1,0 +1,123 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+
+\author{\sc{Group 15}}
+\author{\sc{Yueyang Shen, Yibo Zhao and Xu Zhang}}
+\title{\bf{\sc{Vv557 Methods of Applied Mathematics II
+\\Assignment 6 Group 15}}}
+\date{\sc{20190418}}
+
+
+\begin{document}
+\maketitle{}
+\begin{spacing}{1.5}
+\section*{Exercise 6.1}
+$v$ satisfies
+\begin{align*}
+\int_{\partial \Omega} J(u,v) d \vec \sigma 
+& = - \int_{\partial \Omega} p(v grad \ u - u grad \ v) d \vec{\sigma} \\
+& = \int_{\partial \Omega} p(u \frac{\partial v}{\partial n} - v \frac{\partial u }{\partial n}) d \sigma = 0
+\end{align*}
+for all $u \in M$. Using the boundary condition $Bu = u |_{\partial \Omega} = 0 $, we have $\int_{\partial \Omega} pv \frac{\partial u }{\partial n} d \sigma = 0 $. Since this should be valid for all $u \in M $ and $p(x) > 0 $, we have $v|_{\partial \Omega}=0 $ . This proves $v \in M$.
+
+\section*{Exercies 6.2}
+\subsection*{i)}
+The solution of the wave equation is essentially a generalization of the hyperbolic equation $\rho (x) \frac{\partial^2 u}{\partial t^2} + Lu = \rho (x) F(x,t)$ with $(x,t) \in \Omega \times I $. When $\rho(x), \ p(x), \ q(x) =1$, this degenerates to $u_{tt} - u_{xx} = F(x,t)$. Similar to the treatment for the hyperbolic equation (using a different notation),
+$$
+\tilde{L} = -div \left( p(x) \ grad \right) + q(x), \ \ L=\rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
+$$
+Since we only have second order $\frac{\partial^2}{\partial t^2}$, it is self-adjoint, i.e. 
+$$
+L^* = \rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
+$$
+(Noticing that $\tilde{L}$ is also self-adjoint). Or in our desired manner,
+$$
+L^* = \frac{\partial^2}{\partial t^2} - \frac{\partial^2}{\partial x^2}
+$$
+\begin{align*}
+\int_{V} \left( vLu - uL^*v \right) d(x,t) 
+& = \int_{V} \left( div_x \left( pu \ grad_xv - pv \ grad_xu\right) \right)  + p(x) \left( v \frac{d^2}{dt^2} u - u \frac{d^2}{dt^2} v\right)  d(x,t) \\
+& = \int_{V} div_{(x,t)} \left( \begin{matrix}
+u \ grad_x v - v \ grad_x u \\
+\rho v u_t - u \rho v_t 
+\end{matrix} \right) d \vec{\sigma}
+\end{align*}
+The conjunct is therefore
+$$
+J(u,v) = \left( \begin{matrix}
+u \ grad_x v - v \ grad_x u \\
+v u_t - u v_t 
+\end{matrix} \right)
+$$
+
+$\partial V = \Omega \times \{0\} \ \cup \ \partial \Omega \times [0,T] \ \cup \ \Omega \times T_{top}$. We then evaluate
+\begin{align*}
+\int_{\partial \Omega} J(u,v) d \vec{\sigma} 
+& = \int_{\partial V_{top}} J(u,v) d \vec{\sigma} + \int_{\partial V_{bottom}} J(u,v) d \vec{\sigma} + \int_{\partial V_{mantle}} J(u,v) d \vec{\sigma} \\
+& = ^{(mantle)} \int_{\partial \Omega} \int_{0}^{T} \left( u \ grad v- v \ grad u\right)  dt d\vec{\sigma} \\
+& \ \ \ \ + ^{(top)} \int_{\partial \Omega} \left( u_t(x,t)  v(x,t) - u(x,t) v_t(x,t) \right) dx \\
+& \ \ \ \ - \int_{\partial \Omega} \left( u_t(x,0) v(x,0) - u(x,0) v_t(x,0)\right) dx
+\end{align*}
+$
+M =\left\lbrace u \in C^2(V) : \tilde{B} = B_1u = B_2u = 0\right\rbrace 
+$ where $\tilde{B} u = \gamma(x,t)$, $B_1u = u(x,0) = f(x)$, $B_2u=u_t(x,0) = h(x)$. While the adjoint boundary conditions are: $\tilde{B}^* v = \tilde{B} v$, $B_1^*v = v(x,T)$, $B_2^*v=v_t(x,T)$. And $ M^* =\left\lbrace v \in C^2(V) :\int_{\partial \Omega} J(u,v) d \vec{\sigma} =0 \right\rbrace $
+for all $u\in M$. We notice that $(L^*, B^*) = (L,B)$, therefore $g^* =g$.
+
+Let $Lu = F(x,t)$, $u(x,0) = f(x)$, $Bu= \gamma(x,t)$, $u_t(x,0) = h(x)$. $v=g^*=g$ satisfies $L^*g = \delta \left( (x,t) - (\xi,T) \right)$, $g(x,t;\xi,T) =0 $, $Bg=0$.
+$$
+u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx + \int_{\Omega} \frac{\gamma}{\beta} g(\cdot;\xi,T) d\sigma
+$$
+Using $\frac{\partial u }{\partial n} \Big|_{\partial I} =0 \Rightarrow \gamma =0 \alpha(x) =0$, we have
+$$
+u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx
+$$
+
+\subsection*{ii)}
+$\boldsymbol{a}$. $E(x,0;\xi,\tau) = \frac{1}{2} H(-\tau-|x-\xi|)$. Since $T>0$, $\tau > 0$, $\Rightarrow E(x,0;\xi,\tau) = 0$.\\
+$\boldsymbol{b}$. Consider $\frac{\partial E}{\partial t}$ distributionally:
+\begin{align*}
+T_{\frac{\partial E}{\partial t}} \varphi 
+& = \int_{\mathbb{R}} \frac{\partial}{\partial t} \left( \frac{1}{2} H(t-\tau-|x-\xi|) \right)  \varphi dt \\
+& = - \int_{\tau + |x-\xi|}^{\infty} \frac{1}{2} \frac{\partial \varphi}{\partial t} dt = - \left( \frac{1}{2} \varphi \right)_{\tau + |x-\xi|} ^ \infty \\
+& = 0 + \frac{1}{2} \varphi \left( \tau + |x-\xi| \right) \\
+& = \int_{\mathbb{R}} \frac{1}{2} \delta (t-\tau-|x-\xi|)\varphi dt = T_{\frac{1}{2}\delta(t-\tau-|x-\xi|)} \varphi 
+\end{align*}
+$\Rightarrow E_t(x,t;\xi,\tau) = \frac{1}{2}\delta(t-\tau-|x-\xi|)$, $\Rightarrow E_t(x,0;\xi,\tau) = \frac{1}{2}\delta(-\tau-|x-\xi|)$. Since $\tau > 0$, $-\tau \neq |x-\xi|$, $\Rightarrow E_t(x,0;\xi,\tau)=0$. \\
+$\boldsymbol{c}$. 
+\begin{align*}
+T_{\frac{\partial E}{\partial x}} \varphi 
+& = -\int_{\mathbb{R}} \left( \frac{1}{2} H(t-\tau-|x-\xi|) \right) \frac{\partial \varphi}{\partial x} dx \\
+& = -\int_{\xi}^{\xi+t-\tau} \frac{1}{2} \frac{\partial \varphi}{\partial x} dx - \int_{\tau+\xi-t}^{\xi} \frac{1}{2} \frac{\partial \varphi }{\partial x} dx \\
+& = -\int_{\tau+\xi-t}^{\xi+t-\tau}\frac{1}{2} \frac{\partial \varphi }{\partial x} dx \\
+& = \int \frac{1}{2} \delta (x-\tau -\xi +t) \varphi dx - \int \frac{1}{2} \delta(x-\xi-t+\tau) \varphi dx
+\end{align*}
+$\Rightarrow E_x(x,t;\xi,\tau)=\frac{1}{2} \delta (x-\tau-\xi+t) - \frac{1}{2} \delta (x-\xi-t+\tau)$. On $\partial I$, L is large enough so that
+$$
+\left\lbrace 
+\begin{aligned}
+& \frac{1}{2} \delta (L-\tau-\xi+t) = \frac{1}{2} \delta (L-\xi-t+\tau)=0 \\
+& \frac{1}{2} \delta(-L-\tau-\xi+t) = \frac{1}{2} \delta(-L-\xi-t+\tau)=0
+\end{aligned}
+\right.
+$$
+Combining a, b, c, boundary conditions are satisfied.
+
+\subsection*{iii)}
+From ii), we have $E(x,0;\xi,\tau) = \frac{1}{2} H(-\tau-|x-\xi|)$, and $ E_t(x,0;\xi,\tau) = \frac{1}{2}\delta(-\tau-|x-\xi|)$. And from exercise 3.3, we know the solution to $u_{tt} - u_{xx} =0$ is 
+$$
+u(x,t) = \frac{1}{2} \left( f(x-t) + f(x+t) + \int_{x-t}^{x+t} g(s) ds \right) 
+$$
+
+
+
+
+
+
+
+
+\end{spacing}
+\end{document}
