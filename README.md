@@ -1,4 +1,4 @@
-# Graduate courses at UM-SJTU
+# Graduate courses taken at JI
 
 ## Vm432 Combustion
 
