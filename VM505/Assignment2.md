@@ -63,7 +63,7 @@ end
 end
 ```
 
-![](C:\Users\xzhang\Documents\JI\VM505FiniteElementMethods\Assignments\asgnmt2_1.jpg)
+
 
 ### (2) $u'(0) = u(1) = 0$
 
@@ -126,7 +126,7 @@ end
 end
 ```
 
-![Alt text](C:\Users\xzhang\Documents\JI\VM505FiniteElementMethods\Assignments\asgnmt2_2.jpg)
+
 
 ### (3) $u'(0) - u(0) = u(1) = 0$
 
@@ -189,5 +189,3 @@ for iquad = 1 : nquad
 end
 end
 ```
-
-![Alt text](C:\Users\xzhang\Documents\JI\VM505FiniteElementMethods\Assignments\asgnmt2_3.jpg)
