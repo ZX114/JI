@@ -28,15 +28,15 @@ for all $u \in M$. Using the boundary condition $Bu = u |_{\partial \Omega} = 0 
 \subsection*{i)}
 The solution of the wave equation is essentially a generalization of the hyperbolic equation $\rho (x) \frac{\partial^2 u}{\partial t^2} + Lu = \rho (x) F(x,t)$ with $(x,t) \in \Omega \times I $. When $\rho(x), \ p(x), \ q(x) =1$, this degenerates to $u_{tt} - u_{xx} = F(x,t)$. Similar to the treatment for the hyperbolic equation (using a different notation),
 $$
-\tilde{L} = -div \left( p(x) \ grad \right) + q(x), \ \ L=\rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
+    \tilde{L} = -div \left( p(x) \ grad \right) + q(x), \ \ L=\rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
 $$
 Since we only have second order $\frac{\partial^2}{\partial t^2}$, it is self-adjoint, i.e. 
 $$
-L^* = \rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
+    L^* = \rho(x)\frac{\partial^2}{\partial t^2} + \tilde{L}
 $$
 (Noticing that $\tilde{L}$ is also self-adjoint). Or in our desired manner,
 $$
-L^* = \frac{\partial^2}{\partial t^2} - \frac{\partial^2}{\partial x^2}
+    L^* = \frac{\partial^2}{\partial t^2} - \frac{\partial^2}{\partial x^2}
 $$
 \begin{align*}
 \int_{V} \left( vLu - uL^*v \right) d(x,t) 
@@ -69,11 +69,11 @@ for all $u\in M$. We notice that $(L^*, B^*) = (L,B)$, therefore $g^* =g$.
 
 Let $Lu = F(x,t)$, $u(x,0) = f(x)$, $Bu= \gamma(x,t)$, $u_t(x,0) = h(x)$. $v=g^*=g$ satisfies $L^*g = \delta \left( (x,t) - (\xi,T) \right)$, $g(x,t;\xi,T) =0 $, $Bg=0$.
 $$
-u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx + \int_{\Omega} \frac{\gamma}{\beta} g(\cdot;\xi,T) d\sigma
+    u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx + \int_{\Omega} \frac{\gamma}{\beta} g(\cdot;\xi,T) d\sigma
 $$
 Using $\frac{\partial u }{\partial n} \Big|_{\partial I} =0 \Rightarrow \gamma =0 \alpha(x) =0$, we have
 $$
-u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx
+    u(\xi,T) = \int_{0}^{V} F(x,t) g(x,t;\xi,T) d(x,t) + \int_{\Omega} g(x,0;\xi,T) h(x) dx - \int_{\Omega}g_t(x,0;\xi,T) f(x) dx
 $$
 
 \subsection*{ii)}
@@ -109,7 +109,7 @@ Combining a, b, c, boundary conditions are satisfied.
 \subsection*{iii)}
 From ii), we have $E(x,0;\xi,\tau) = \frac{1}{2} H(-\tau-|x-\xi|)$, and $ E_t(x,0;\xi,\tau) = \frac{1}{2}\delta(-\tau-|x-\xi|)$. And from exercise 3.3, we know the solution to $u_{tt} - u_{xx} =0$ is 
 $$
-u(x,t) = \frac{1}{2} \left( f(x-t) + f(x+t) + \int_{x-t}^{x+t} g(s) ds \right) 
+    u(x,t) = \frac{1}{2} \left( f(x-t) + f(x+t) + \int_{x-t}^{x+t} g(s) ds \right) 
 $$
 
 

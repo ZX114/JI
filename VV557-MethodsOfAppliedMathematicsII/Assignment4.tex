@@ -21,7 +21,7 @@
 $L = \frac{d^4}{dx^4}$, $a_0=0, \ a_1=0, \ a_2=0, \ a_3=0, \ a_4=1$ \\
 The problem $\{0;0,0,0,1\}$ has a solution with the form of
 $$
-y=Ax^3+Bx^2+Cx+D
+    y=Ax^3+Bx^2+Cx+D
 $$
 \begin{align*}
 & u1: \ u_1(0)=1 \Rightarrow u_1(x) = 1\\
@@ -31,12 +31,12 @@ $$
 \end{align*}
 which give $u(x) = 1 \cdot u_4(x) = \frac{1}{6}x^3$, and $u_\xi(x) = u(x-\xi) = \frac{1}{6}(x-\xi)^3$. And the corresponding causal fundamental solution is
 $$
-E(x;\xi) = \frac{1}{6} H(x-\xi) (x-\xi)^3
+    E(x;\xi) = \frac{1}{6} H(x-\xi) (x-\xi)^3
 $$
 
 \subsection*{ii)}
 $$
-g = \frac{1}{6} H(x-\xi) (x-\xi)^3 + Ax^3 + Bx^2 + Cx + D
+    g = \frac{1}{6} H(x-\xi) (x-\xi)^3 + Ax^3 + Bx^2 + Cx + D
 $$
 Apply boundary conditions
 \begin{align*}
@@ -47,7 +47,7 @@ Apply boundary conditions
 \end{align*}
 Therefore, 
 $$
-g = \frac{\xi-1}{6}x^3 + \frac{\xi(\xi-1)(\xi-2)}{6}x
+    g = \frac{\xi-1}{6}x^3 + \frac{\xi(\xi-1)(\xi-2)}{6}x
 $$
 
 
@@ -55,7 +55,7 @@ $$
 \subsection*{i)}
 $L = -\frac{d^2}{dx^2} - k^2$, to construct a causal fundamental solution, we first solve $\{ 0;0,-1 \}$. \\
 $$
--\lambda^2 - k^2 = 0 \Rightarrow \lambda = \pm i k
+    -\lambda^2 - k^2 = 0 \Rightarrow \lambda = \pm i k
 $$
 which gives $u(x) = C_1 \sin(kx) + C_2 \cos(kx) $
 \begin{align*}
@@ -75,7 +75,7 @@ $\Rightarrow \  E(x,\xi) = -\frac{1}{k} \sin k(x-\xi) H(x-\xi)$
 
 \subsection*{ii)}
 $$
-g = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + C_1\cos kx + C_2\sin kx
+    g = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + C_1\cos kx + C_2\sin kx
 $$
 Apply boundary conditions
 \begin{align*}
@@ -84,13 +84,13 @@ Apply boundary conditions
 \end{align*}
 Therefore,
 $$
-g(x;\xi) = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + \frac{\sin k(1-\xi)}{k \sin k} \sin kx
+    g(x;\xi) = -\frac{1}{k}  \sin k(x-\xi) H(x-\xi) + \frac{\sin k(1-\xi)}{k \sin k} \sin kx
 $$
 
 \subsection*{iii)}
 Using the Fourier transform 
 $$
-Lu = \delta(x) \Rightarrow \xi^2 \hat{u} - k^2 \hat{u} = \frac{1}{\sqrt{2\pi}} \Rightarrow \hat{u}=\frac{1}{\sqrt{2\pi}} \frac{1}{\xi^2 - k^2}
+    Lu = \delta(x) \Rightarrow \xi^2 \hat{u} - k^2 \hat{u} = \frac{1}{\sqrt{2\pi}} \Rightarrow \hat{u}=\frac{1}{\sqrt{2\pi}} \frac{1}{\xi^2 - k^2}
 $$
 Then $u(x)$ is simply the inverse Fourier transform of $\hat{u}$
 \begin{align*}
@@ -102,7 +102,7 @@ Then $u(x)$ is simply the inverse Fourier transform of $\hat{u}$
 
 \subsection*{iv)}
 $$
-g = \frac{i}{2k} sgn(x-\xi) \sin k(x-\xi) + C_1\cos kx + C_2\sin kx
+    g = \frac{i}{2k} sgn(x-\xi) \sin k(x-\xi) + C_1\cos kx + C_2\sin kx
 $$
 Apply boundary conditions
 \begin{align*}
@@ -111,12 +111,8 @@ Apply boundary conditions
 \end{align*}
 Therefore,
 $$
-g(x;\xi) = -\frac{sgn(\xi-x) \sin k(\xi-x)}{2k} + -i\frac{\sin k\xi}{2k} \cos kx +i \frac{\sin k(1-\xi) - \sin k\xi \cos k}{2k\sin k}\sin kx
+    g(x;\xi) = -\frac{sgn(\xi-x) \sin k(\xi-x)}{2k} + -i\frac{\sin k\xi}{2k} \cos kx +i \frac{\sin k(1-\xi) - \sin k\xi \cos k}{2k\sin k}\sin kx
 $$
-
-
-
-
 
 
 

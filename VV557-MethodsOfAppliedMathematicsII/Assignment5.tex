@@ -67,16 +67,16 @@ J(x,v)\Big|_0^1 & = <v,Lu> - <L^*v,u> = \int_{0}^{1} v \frac{d^4}{dx^4} udx - \i
 \end{align*}
 Therefore the adjoint boundary conditions are 
 $$
-B_1v = v(1), \ B_2v = v'(0) , \ B_3v = v''(1) , \ B_4v = v''(0)
+    B_1v = v(1), \ B_2v = v'(0) , \ B_3v = v''(1) , \ B_4v = v''(0)
 $$
 Similarly, we have the green's function $Ax^3+Bx^2+Cx+D$, and 
 $$
-g^*(x,\xi) = \left\{
-\begin{aligned}
-& Bx^3 +C   &x<\xi\\
-& Ax^3 + (-3Ax^2) +Dx +2A - D &x>\xi\\
-\end{aligned}
-\right.
+    g^*(x,\xi) = \left\{
+    \begin{aligned}
+    & Bx^3 +C   &x<\xi\\
+    & Ax^3 + (-3Ax^2) +Dx +2A - D &x>\xi\\
+    \end{aligned}
+    \right.
 $$
 
 $$
@@ -96,7 +96,7 @@ By the reciprocity principle, since $g \neq g^*$, we do not have $g(x,\xi) = g(\
 \section*{Exercise 5.3}
 $L = -\frac{d^3}{dx^3} -1$
 $$
-(LT)\varphi = -T''(\varphi) - T(\varphi) = - T(\varphi'') - T(\varphi) = T(L^*\varphi) \Rightarrow L^* = -\frac{d^2}{dx^2} -1 
+    (LT)\varphi = -T''(\varphi) - T(\varphi) = - T(\varphi'') - T(\varphi) = T(L^*\varphi) \Rightarrow L^* = -\frac{d^2}{dx^2} -1 
 $$
 
 \begin{align*}
@@ -115,14 +115,14 @@ Solvability conditions:
 \end{align*}
 Therefore $\gamma_1 = \gamma_2 =0 $ gives
 $$
-\int_{-\pi}^{\pi} f(x) \cos(x)dx =\int_{-\pi}^{\pi} f(x) \sin(x)dx =0
+    \int_{-\pi}^{\pi} f(x) \cos(x)dx =\int_{-\pi}^{\pi} f(x) \sin(x)dx =0
 $$
 Because $\sin x, \ \cos x$ are odd and even functions respectively, the integrations equal zero only if $f(x)$ is zero. This means that there should be no forcing.
 
 
 \section*{Exercise 5.4}
 $$
-(LT)\varphi = T''\varphi + \pi^2 T \varphi = T(\varphi'') + T\pi^2\varphi \Rightarrow L^* = \frac{d^2}{dx^2} + \pi^2
+    (LT)\varphi = T''\varphi + \pi^2 T \varphi = T(\varphi'') + T\pi^2\varphi \Rightarrow L^* = \frac{d^2}{dx^2} + \pi^2
 $$
 \begin{align*}
 J(u,v) \Big|_0^1 
@@ -132,12 +132,12 @@ J(u,v) \Big|_0^1
 $\Rightarrow B_1^*v = v'(1) +v'(0) , \ B_2^*v=v(1) +v(0)$ \\
 Together $L^*u=0 \ \& \  B_1^*v = v'(1) +v'(0) , \ B_2^*v=v(1) +v(0)$. We have, 
 $$
-v^{(1)}(x) = \cos(\pi x), \ v^{(2)} (x) = \sin(\pi x)
+    v^{(1)}(x) = \cos(\pi x), \ v^{(2)} (x) = \sin(\pi x)
 $$
 Since $Lw=v$,
 $$
-w^{(1)} (x) = \frac{\cos x}{\pi} + A \cos(\pi x) + B  \sin(\pi x), \ 
-w^{(2)} (x) = \frac{\sin x}{\pi} + C \cos(\pi x) + D  \sin(\pi x)
+    w^{(1)} (x) = \frac{\cos x}{\pi} + A \cos(\pi x) + B  \sin(\pi x), \ 
+    w^{(2)} (x) = \frac{\sin x}{\pi} + C \cos(\pi x) + D  \sin(\pi x)
 $$
 
 $g_M = E(x,\xi) - \sum_{i=1}^{2}v^{(i)}(\xi) w^{(i)}(x) + u_{homo}$
@@ -148,12 +148,12 @@ $g_M = E(x,\xi) - \sum_{i=1}^{2}v^{(i)}(\xi) w^{(i)}(x) + u_{homo}$
 $L = \frac{d^4}{dx^4}, \ 0<x<1, \ B_1u=u''(0) , \ B_2u=u'''(0), \ B_3u=u''(1), \ B_4(u) = u'''(1). \ Lu=0 \  \Rightarrow \ u(x) = Ax^3 + Bx^2 + Cx + D$. \\
 Plugging in the boundary conditions. The nontrivial solution is 
 $$
-u(x) = Cx+D  \ \ \ \ 0<x<1
+    u(x) = Cx+D  \ \ \ \ 0<x<1
 $$
 
 \subsection*{ii)}
 $$
-(LT) \varphi = T(\varphi^{(4)}) = T(L^*\varphi) \Rightarrow L^* = \frac{d^4}{dx^4}
+    (LT) \varphi = T(\varphi^{(4)}) = T(L^*\varphi) \Rightarrow L^* = \frac{d^4}{dx^4}
 $$
 \begin{align*}\
 J(u,v)\Big|_0^1 
@@ -167,7 +167,7 @@ So the problem is self-adjoint.
 \subsection*{iii)}
 $L^*v=0, \ B_1^*v = 0 , \ B_2^*v = 0 \ B_3^*v = 0 , \ B_4^*v = 0$
 $$
-\Rightarrow v= Cx+D \ v^{(1)} = 1 \ v^{(2)} = x
+    \Rightarrow v= Cx+D \ v^{(1)} = 1 \ v^{(2)} = x
 $$
 First consider $LE=\delta(x-\xi)$, $E(x,\xi) = H(x-\xi) \frac{1}{6} (x-\xi)^3$
 
