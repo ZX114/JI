@@ -1,9 +1,10 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+\documentclass[a4paper, 11pt]{article}
 
-\title{Combustion HW-3}
-\author{}
-\date{}
+\usepackage[inner= 1 in, outer=1 in, top=1in, bottom= 1in]{geometry}
+
+\title{Combustion Homework-3}
+\author{Xu Zhang}
+\date{Oct 23, 2018}
 
 
 \usepackage{graphicx}
@@ -44,39 +45,39 @@ $$
 \section{Review the derivation of the burning velocity}
 Governing equations:
 $$
-\dot{m} \frac{dY_i}{dx}=D\rho \frac{d^2Y_i}{dx^2} - \omega
+    \dot{m} \frac{dY_i}{dx}=D\rho \frac{d^2Y_i}{dx^2} - \omega
 $$
 $$
-\dot{m} c_p \frac{dT}{dx}=\lambda \frac{d^2T}{dx^2} + Q \omega
+    \dot{m} c_p \frac{dT}{dx}=\lambda \frac{d^2T}{dx^2} + Q \omega
 $$
 where $\omega = B_cYe^{-T_a/T}$ (the dependence of $\omega$ on the  parameters and the concentration are absorbed in $B_c$)\\
 Non-dimensional form:
 $$
-\frac{d^2\tilde{T}}{d\tilde{x}^2} - \frac{d\tilde{T}}{d\tilde{x}} = -\frac{B_c}{c_p\dot{m}^2/\lambda}\tilde{Y}e^{-E/R\tilde{T}}
+    \frac{d^2\tilde{T}}{d\tilde{x}^2} - \frac{d\tilde{T}}{d\tilde{x}} = -\frac{B_c}{c_p\dot{m}^2/\lambda}\tilde{Y}e^{-E/R\tilde{T}}
 $$
 $$
-\frac{d^2\tilde{T}}{d\tilde{x}^2}+\frac{1}{Le}\frac{d^2\tilde{Y}}{d\tilde{x}^2}-\frac{d(\tilde{T}+\tilde{Y})}{\tilde{x}}=0
+    \frac{d^2\tilde{T}}{d\tilde{x}^2}+\frac{1}{Le}\frac{d^2\tilde{Y}}{d\tilde{x}^2}-\frac{d(\tilde{T}+\tilde{Y})}{\tilde{x}}=0
 $$
 where $\tilde{T}=c_pT/q_cY_u$, $\tilde{Y}=Y/Y_u$ and $\tilde{x}=c_px/\dot{m}\lambda$
 
 In the non-reaction zone, reaction rate $\omega$ is approximately zero, while in the reaction zone, the first order derivative can be safely neglected. Integrate from $-\infty\ to\ 0$ and $0\ to\ \infty$ respectively under this assumption:
 $$
-\frac{d^2\tilde{T}}{d\tilde{x}^2} - \frac{d\tilde{T}}{d\tilde{x}} = 0
+    \frac{d^2\tilde{T}}{d\tilde{x}^2} - \frac{d\tilde{T}}{d\tilde{x}} = 0
 $$
 $$
-(\frac{d\tilde{T}}{d\tilde{x}})^2=2Le\frac{B_c}{c_p\dot{m}/\lambda}\int_{\tilde{T_0}}^{\tilde{T_b}} (\tilde{T}_b-\tilde{T})e^{-E/R\tilde{T}}d\tilde{T}
+    (\frac{d\tilde{T}}{d\tilde{x}})^2=2Le\frac{B_c}{c_p\dot{m}/\lambda}\int_{\tilde{T_0}}^{\tilde{T_b}} (\tilde{T}_b-\tilde{T})e^{-E/R\tilde{T}}d\tilde{T}
 $$
 at x=0, these two solutions need to be consistent, which means:
 $$
-\tilde{T}_b-\tilde{T}_u = [2Le\frac{B_c}{c_p\dot{m}/\lambda}\int_{\tilde{T_0}}^{\tilde{T_b}} (\tilde{T}_b-\tilde{T})e^{-E/R\tilde{T}}d\tilde{T}]^{1/2}
+    \tilde{T}_b-\tilde{T}_u = [2Le\frac{B_c}{c_p\dot{m}/\lambda}\int_{\tilde{T_0}}^{\tilde{T_b}} (\tilde{T}_b-\tilde{T})e^{-E/R\tilde{T}}d\tilde{T}]^{1/2}
 $$
 in dimensional form:
 $$
-\dot{m}(T_b-T_u)\sqrt{c_p/\lambda}=[2Le\int_{T_0}^{T_b} (T_b-T) c e^{-E/RT}dT]^{1/2}
+    \dot{m}(T_b-T_u)\sqrt{c_p/\lambda}=[2Le\int_{T_0}^{T_b} (T_b-T) c e^{-E/RT}dT]^{1/2}
 $$
 where $\dot{m}=\rho_uS_L$. Substitute this into the above equation yields the burning velocity:
 $$
-S_L=\frac{[2Le\int_{T_0}^{T_b} (T_b-T) c e^{-E/RT}dT]^{1/2}}{{\rho}_u\sqrt{\frac{c_p}{\lambda}}(T_b-T_u)}
+    S_L=\frac{[2Le\int_{T_0}^{T_b} (T_b-T) c e^{-E/RT}dT]^{1/2}}{{\rho}_u\sqrt{\frac{c_p}{\lambda}}(T_b-T_u)}
 $$
 
 $S_L$ is dependent on $T_b$ (adiabatic flame temperature), while $T_b$ is related to $\phi$ (equivalence ratio) as discussed in HW-I. Therefore, $S_L$ reaches its maximum at $\phi=1$. However, under practical conditions, the maximum point will shift a little to $\phi>1$.
@@ -124,7 +125,7 @@ Solve this equation numerically, and the result is shown in Figure \ref{fig:sCur
 
 \begin{figure}[htpb]
 \centering
-\includegraphics[scale=0.36]{sCurve.eps}
+\includegraphics[scale=0.5]{SCurve.eps}
 \caption{S-Curve}
 \label{fig:sCurve}
 \end{figure}

@@ -1,6 +1,7 @@
 % Assignment 2
 % Solve:  -u_{,xx} + u + x^3 = 0, x \in (0,1)
 % Subjected to:  u'(0) - u(0) = u(1) = 0
+
 % pre-processing
 nel = 12; nnode = nel + 1; a = 0; b = 1;
 x_nodes = linspace(a, b, nnode);

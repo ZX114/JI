@@ -1,25 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 23 16:09:33 2018
+# Created on Tue Oct 23 16:09:33 2018
+# The S-Curve gives an indication of the flame
 
-the S-curve
-
-@author: xzhang
-"""
 from math import e
 import numpy as np
 import matplotlib.pyplot as plt
-#==============================================================================#
+
+# Some initial values
 T0 = np.arange(0.1,0.30,0.05)
 Ta = 1.0
 Tf = np.arange(0.001,2,0.001)
-#==============================================================================#
-plt.rcParams["font.sans-serif"] = ["Times New Roman"]
-plt.rcParams['axes.unicode_minus'] = False
-labelfontsize = 30
-legendfontsize = 26
-ticksfontsize = 30
-plt.figure(figsize=(12,8))
+labelfontsize = 20
+legendfontsize = 20
+ticksfontsize = 20
+plt.figure(figsize=(8,6))
 
 
 for iT0 in T0:
@@ -33,7 +26,7 @@ for iT0 in T0:
         else:
             xDa = np.append(xDa, Da)
             yTf = np.append(yTf, iTf)
-    plt.plot(xDa,yTf,label=labelT0,linewidth=20.0*iT0)
+    plt.plot(xDa,yTf,label=labelT0,linewidth=4)
 plt.legend(loc='right',ncol=2,fontsize=legendfontsize)
 plt.xlim(0.0,50.0)
 plt.ylim(0.0,1.5)
@@ -46,7 +39,5 @@ plt.tick_params(labelsize=ticksfontsize)
 plt.xlabel('$Da$',fontsize=labelfontsize,color='k')
 plt.ylabel(r'$\tilde{T}_f$',fontsize=labelfontsize,color='k')
 
-plt.savefig('sCurve.eps') 
+plt.savefig('SCurve.eps')
 plt.show()
-
-            

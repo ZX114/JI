@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Nov  3 10:25:14 2018
-water droplet vaporization
-@author: xzhang
-"""
+# Created on Sat Nov  3 10:25:14 2018
+# Water droplet vaporization with Tinf = 372 K, and Yinf = 0.0.
+# Calculate the droplet temperature and the non-dimensional vaporization rate
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -13,8 +11,9 @@ ql = 540.0*4.184*1000.0 #J/kg
 cp = 0.3*4.184*1000.0 #J/kg K
 Wair = 29.0e-3 #kg/mol
 Wwater = 18.0e-3 #kg/mol
-#==============================================================================#
-#mass fraction from psat
+# =============================================================================
+
+# mass fraction from psat
 def Y(Tem):
     Tem = float(Tem)
     p = 101325.0*np.exp((ql*Wwater/8.314)*(1.0/373.15 - 1.0/Tem))
@@ -31,7 +30,7 @@ def eqT(Y):
     T = Tinf - c
     return T
 
-#iteration with a relaxation fractor of 0.1
+# iteration with a relaxation fractor of 0.1
 T0 = Tinf
 iterN=50
 T = np.linspace(0.0,1.0,iterN)
@@ -43,7 +42,7 @@ for i in range(iterN):
     
 Bhv = cp*(Tinf-T0)/ql
 mTilde = np.log(1.0+Bhv)
-print mTilde    
+print(mTilde)
 
 plt.plot(range(iterN),T,label='T',c='k',linewidth=2)
 plt.axis([0, iterN, 200, 400])
