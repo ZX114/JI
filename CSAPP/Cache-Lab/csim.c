@@ -2,6 +2,7 @@
  * CMU 15-213 Cache-Lab
  * Simulator of a cache memory
  * Keep track of hits, misses and evictions from valgrind-generated traces
+ *
  * xu-zhang@sjtu.edu.cn
  */
 #include <stdio.h>
