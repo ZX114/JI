@@ -1,6 +1,6 @@
 # Shell-Lab
 
-A tiny shell program `tsh.c` with job control
+A tiny shell program `tsh.c` with job control.
 
 ## Compilation
 

@@ -191,19 +191,12 @@ void eval(char *cmdline)
             sigprocmask(SIG_BLOCK, &mask_all, NULL);
             addjob(jobs, pid, FG, cmdline);
             sigprocmask(SIG_SETMASK, &prev_one, NULL);
-            int status;
-            if (waitpid(pid, &status, 0) < 0)
-                unix_error("waitfg: waitpid error");
-            sigprocmask(SIG_BLOCK, &mask_all, NULL);
-            deletejob(jobs, pid);
-            sigprocmask(SIG_SETMASK, &prev_one, NULL);
-
-        }
-        else {
+            waitfg(pid);
+        } else {
             sigprocmask(SIG_BLOCK, &mask_all, NULL);
             addjob(jobs, pid, BG, cmdline);
             sigprocmask(SIG_SETMASK, &prev_one, NULL);
-            printf("%d %s", pid, cmdline);
+            printf("[%d] (%d) %s", pid2jid(pid), pid, cmdline);
         }
     }
     return;
@@ -296,7 +289,13 @@ void do_bgfg(char **argv)
  */
 void waitfg(pid_t pid)
 {
-    return;
+    sigset_t mask;
+    sigemptyset(&mask);
+    
+    while (fgpid(jobs) != 0)
+        sigsuspend(&mask);
+    if (verbose)
+        printf("waitfg: Process (%d) no longer the fg process\n", pid);
 }
 
 /*****************
@@ -313,18 +312,43 @@ void waitfg(pid_t pid)
 void sigchld_handler(int sig) 
 {
     int olderrno = errno;
+    if (verbose)
+        printf("sigchld_handler: entering\n");
+
+    struct job_t *job;
+    int jid;
+    int status;
 
     sigset_t mask_all, prev_all;
     pid_t pid;
     sigfillset(&mask_all);
-    while ((pid = waitpid(-1, NULL, 0)) > 0) {
+    while ((pid = waitpid(-1, &status, 0)) > 0) {
+        job = getjobpid(jobs, pid);
+        jid = job->jid;
         sigprocmask(SIG_BLOCK, &mask_all, &prev_all);
         deletejob(jobs, pid);
+        if (verbose) {
+            char info[50];
+            sprintf(info, "sigchld_handler: Job [%d] (%d) ", jid, pid);
+            printf("%s deleted\n", info);
+
+            if (WIFEXITED(status))
+                printf("%s terminates OK (status %d)\n",
+                        info, WEXITSTATUS(status));
+            if (WIFSIGNALED(status))
+                printf("%s terminated by signal %d\n",
+                        info, WTERMSIG(status));
+            if (WIFSTOPPED(status))
+                printf("%s stopped by signal %d\n",
+                        info, WSTOPSIG(status));
+        }
         sigprocmask(SIG_SETMASK, &prev_all, NULL);
     }
     if (errno != ECHILD)
         sio_error("waitpid error");
 
+    if (verbose)
+        printf("sigchld_handler: exiting\n");
     errno = olderrno;
 }
 
