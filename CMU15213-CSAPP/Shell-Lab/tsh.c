@@ -181,6 +181,7 @@ void eval(char *cmdline)
         sigprocmask(SIG_BLOCK, &mask_one, &prev_one);
         if ((pid = Fork()) == 0) {
             sigprocmask(SIG_SETMASK, &prev_one, NULL);
+            setpgid(0, 0);
             if (execve(argv[0], argv, environ) < 0) {
                 printf("%s: Command not found.\n", argv[0]);
                 exit(0);
@@ -270,6 +271,11 @@ int builtin_cmd(char **argv)
         return 1;
     }
 
+    if (strcmp(argv[0], "bg") == 0 || strcmp(argv[0], "fg") == 0) {
+        do_bgfg(argv);
+        return 1;
+    }
+
     if (strcmp(argv[0], "&") == 0)
         return 1;
 
@@ -281,7 +287,43 @@ int builtin_cmd(char **argv)
  */
 void do_bgfg(char **argv) 
 {
-    return;
+    pid_t pid;
+    struct job_t *job;
+    char *id = argv[1];
+
+    if (id == NULL) {       /* bg or fg has the argument? */
+        printf("%s command requires PID or %%jobid argument\n", argv[0]);
+        return;
+    }
+
+    if (id[0] == '%') {     /* the argument is a job id */
+        int jid = atoi(&id[1]);
+        job = getjobjid(jobs, jid);
+        if (job == NULL) {
+            printf("%%%d: No such job\n", jid);
+            return;
+        }
+    } else if (isdigit(id[0])) {               /*the argument is a pid is a digit number?*/
+        pid = atoi(id);
+        job = getjobpid(jobs, pid);
+        if (job == NULL) {
+            printf("(%d): No such process\n", pid);
+            return;
+        }
+    } else {
+        printf("%s: argument must be a PID or %%jobid\n", argv[0]);
+        return;
+    }
+
+    kill(-(job->pid), SIGCONT); /*send the SIGCONT to the pid*/
+
+    if (!strcmp(argv[0], "bg")) { /*set job state ,do it in bg or fg*/
+        job->state = BG;
+        printf("[%d] (%d) %s", job->jid, job->pid, job->cmdline);
+    } else {
+        job->state = FG;
+        waitfg(job->pid);
+    }
 }
 
 /* 
@@ -292,8 +334,9 @@ void waitfg(pid_t pid)
     sigset_t mask;
     sigemptyset(&mask);
     
-    while (fgpid(jobs) != 0)
+    while (pid == fgpid(jobs))
         sigsuspend(&mask);
+
     if (verbose)
         printf("waitfg: Process (%d) no longer the fg process\n", pid);
 }
@@ -322,29 +365,38 @@ void sigchld_handler(int sig)
     sigset_t mask_all, prev_all;
     pid_t pid;
     sigfillset(&mask_all);
-    while ((pid = waitpid(-1, &status, 0)) > 0) {
+    while ((pid = waitpid(-1, &status, WNOHANG|WUNTRACED)) > 0) {
         job = getjobpid(jobs, pid);
         jid = job->jid;
-        sigprocmask(SIG_BLOCK, &mask_all, &prev_all);
-        deletejob(jobs, pid);
-        if (verbose) {
-            char info[50];
-            sprintf(info, "sigchld_handler: Job [%d] (%d) ", jid, pid);
-            printf("%s deleted\n", info);
-
-            if (WIFEXITED(status))
+        char info[50];
+        sprintf(info, "sigchld_handler: Job [%d] (%d) ", jid, pid);
+        if (WIFEXITED(status)) {
+            sigprocmask(SIG_BLOCK, &mask_all, &prev_all);
+            deletejob(jobs, pid);
+            sigprocmask(SIG_SETMASK, &prev_all, NULL);
+            if (verbose) {
+                printf("%s deleted\n", info);
                 printf("%s terminates OK (status %d)\n",
                         info, WEXITSTATUS(status));
-            if (WIFSIGNALED(status))
-                printf("%s terminated by signal %d\n",
-                        info, WTERMSIG(status));
-            if (WIFSTOPPED(status))
-                printf("%s stopped by signal %d\n",
-                        info, WSTOPSIG(status));
+            }
+        } else if (WIFSIGNALED(status)) {
+            sigprocmask(SIG_BLOCK, &mask_all, &prev_all);
+            deletejob(jobs, pid);
+            sigprocmask(SIG_SETMASK, &prev_all, NULL);
+            if (verbose) {
+                printf("%s deleted\n", info);
+            }
+            printf("%s terminated by signal %d\n",
+                    info, WTERMSIG(status));
+        } else if (WIFSTOPPED(status)) {
+            job->state = ST;
+            printf("%s stopped by signal %d\n",
+                    info, WSTOPSIG(status));
+        } else {
+            app_error("Unknown termination status\n");
         }
-        sigprocmask(SIG_SETMASK, &prev_all, NULL);
     }
-    if (errno != ECHILD)
+    if (pid < 0 && errno != ECHILD)
         sio_error("waitpid error");
 
     if (verbose)
@@ -359,7 +411,18 @@ void sigchld_handler(int sig)
  */
 void sigint_handler(int sig) 
 {
-    return;
+    if (verbose)
+        printf("sigint_handler: entering\n");
+
+    pid_t pid = fgpid(jobs);
+    if (pid > 0) {
+        kill(-pid, SIGINT);
+        if (verbose)
+            printf("sigint_handler: Job (%d) killed\n", pid);
+    }
+
+    if (verbose)
+        printf("sigint_handler: exiting\n");
 }
 
 /*
@@ -369,7 +432,23 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
-    return;
+    if (verbose)
+        printf("sigtstp_handler: entering\n");
+
+    pid_t pid = fgpid(jobs);
+    if (pid > 0) {
+        struct job_t *job = getjobpid(jobs, pid);
+        if (job->state == ST) {  /*already stop the job ,dot do it again*/
+            return;
+        } else {
+            kill(-pid, SIGTSTP);
+            if (verbose)
+                printf("sigtstp_handler: Job (%d) stopped\n", pid);
+        }
+    }
+
+    if (verbose)
+        printf("sigtstp_handler: exiting\n");
 }
 
 /*********************
@@ -509,18 +588,18 @@ void listjobs(struct job_t *jobs)
         if (jobs[i].pid != 0) {
             printf("[%d] (%d) ", jobs[i].jid, jobs[i].pid);
             switch (jobs[i].state) {
-                case BG: 
-                    printf("Running ");
-                    break;
-                case FG: 
-                    printf("Foreground ");
-                    break;
-                case ST: 
-                    printf("Stopped ");
-                    break;
+            case BG: 
+                printf("Running ");
+                break;
+            case FG: 
+                printf("Foreground ");
+                break;
+            case ST: 
+                printf("Stopped ");
+                break;
             default:
-                    printf("listjobs: Internal error: job[%d].state=%d ", 
-                           i, jobs[i].state);
+                printf("listjobs: Internal error: job[%d].state=%d ", 
+                       i, jobs[i].state);
             }
             printf("%s", jobs[i].cmdline);
         }
@@ -566,6 +645,4 @@ void sigquit_handler(int sig)
     printf("Terminating after receipt of SIGQUIT signal\n");
     exit(1);
 }
-
-
 
