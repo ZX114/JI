@@ -24,7 +24,7 @@ The course consists of three parts, each dealing with certain mathematical techn
 
 
 
-## Vm 505 Finite Element Methods
+## Vm505 Finite Element Methods
 
 This course focuses on the development of finite element methods for linear, static and dynamic structural analysis. The basic tools of the finite element method are described and the formulation of various structural elements is discussed.
 
