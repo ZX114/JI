@@ -18,15 +18,15 @@ Introduction to combustion processes; combustion thermodynamics, reaction kineti
 
 
 
-## Vm520 Advanced Fluid Mechanics
-
->  *Fundamental Mechanics of Fluids, I. G. Currie, 2003*
-
-
-
 ## Vm505 Finite Element Methods
 
 This course focuses on the development of finite element methods for linear, static and dynamic structural analysis. The basic tools of the finite element method are described and the formulation of various structural elements is discussed.
+
+
+
+## Vm520 Advanced Fluid Mechanics
+
+>  *Fundamental Mechanics of Fluids, I. G. Currie, 2003*
 
 
 
