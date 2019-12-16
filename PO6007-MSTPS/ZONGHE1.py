@@ -1,30 +1,109 @@
 # Mon Dec 16 10:42:25 CST 2019
 # ZONG HE ZUO YE 1
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# Configurations
+mpl.rcParams['font.family'] = 'serif'
+mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.weight'] = 'medium'
+mpl.rcParams['font.style'] = 'normal'
+mpl.rcParams['font.serif'] = 'DejaVu Serif'
+mpl.rcParams['mathtext.fontset'] = 'stix'
+mpl.rcParams['mathtext.fallback_to_cm'] = True
+mpl.rcParams['lines.linewidth'] = 2
+mpl.rcParams['savefig.dpi'] = 300
+mpl.rcParams['savefig.bbox'] = 'tight'
 
 # Constants
-PATM =  101.3e03  # Pa
-CP   =  1004.0    # J/kg K
-RG   =  287.0     # J/kg K
-K    =  1.4       # -
-PCR  =  0.528     # -
-P0   =  18000e03  # Pa 
-H0   =  299.3e03  # J/kg
-H1   =  299.3e03  # J/kg
-CV1  =  0.009487  # Control Valve
-CT   =  0.001116  # Turbine
-CV2  =  0.004016  # Bypass Valve
+PATM =  101.3e03       # Pa
+CP   =  1004.0         # J/kg K
+RG   =  287.0          # J/kg K
+K    =  1.4            # -
+PCR  =  0.528          # -
+P0   =  18000e03       # Pa
+P1   =  PATM           # Initial Pressure of the Chamber
+P3   =  PATM           # Outlet Pressure
+H0   =  299.3e03       # J/kg
+H1   =  299.3e03       # J/kg
+T0   =  H0 / CP        # K
+RHO0 =  P0 / (T0 * RG) # kg/m3
+CV1  =  0.009487       # Control Valve
+CT   =  0.001116       # Turbine
+CV2  =  0.004016       # Bypass Valve
+VCB1 =  0.25           # m3
+VCB2 =  0.50           # m3
 
 
 def main():
-    v1 = Valve(Cv=CV1, Yst=1)
-    t1 = Turbine(Ct=CT)
-    cb = Chamber(vol = 0.25)
-    print(t1)
-    print(v1)
-    print(cb)
-    print(v1.calcVolFlux(p1=2*PATM, p2=PATM))
-    print(t1.calcVolFlux(p1=2*PATM, p2=PATM))
-    pass
+    controlValv = Valve(Cv=CV1, Yst=0.0)
+    bypassValv = Valve(Cv=CV2, Yst=0.0)
+    tb = Turbine(Ct=CT)
+
+    dt = 0.01
+    time = np.arange(0.0, 10.0+dt, dt)
+    p_cb1 = np.zeros(len(time))
+    T_cb1 = np.zeros(len(time))
+    G_tb1 = np.zeros(len(time))
+    p_cb2 = np.zeros(len(time))
+    T_cb2 = np.zeros(len(time))
+    G_tb2 = np.zeros(len(time))
+
+    # VCB1
+    cb = Chamber(vol=VCB1, p=P1, h=H1)
+    for it in range(len(time)):
+        t = time[it]
+        controlValv.setYst(Yst_Control(t))
+        bypassValv.setYst(Yst_Bypass(t))
+        G1 = controlValv.calcVolFlux(RHO0, P0, cb.getPressure())
+        G2 = tb.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        G3 = bypassValv.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        cb.updateState(G1, G2, G3, H0, cb.getEnthalpy(), dt)
+        p_cb1[it] = cb.getPressure()
+        T_cb1[it] = cb.getTemperature()
+        G_tb1[it] = G2
+
+    # VCB2
+    cb = Chamber(vol=VCB2, p=P1, h=H1)
+    for it in range(len(time)):
+        t = time[it]
+        controlValv.setYst(Yst_Control(t))
+        bypassValv.setYst(Yst_Bypass(t))
+        G1 = controlValv.calcVolFlux(RHO0, P0, cb.getPressure())
+        G2 = tb.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        G3 = bypassValv.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        cb.updateState(G1, G2, G3, H0, cb.getEnthalpy(), dt)
+        p_cb2[it] = cb.getPressure()
+        T_cb2[it] = cb.getTemperature()
+        G_tb2[it] = G2
+
+    fig = plt.figure(figsize=(7,5))
+    ax = plt.subplot(111)
+    ax.plot(time, p_cb1, label='V = 0.25')
+    ax.plot(time, p_cb2, label='V = 0.50')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Pressure (Pa)')
+    plt.tight_layout()
+    plt.show()
+
+    fig = plt.figure(figsize=(7,5))
+    ax = plt.subplot(111)
+    ax.plot(time, T_cb1, label='V = 0.25')
+    ax.plot(time, T_cb2, label='V = 0.50')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Temperature (K)')
+    plt.tight_layout()
+    plt.show()
+
+    fig = plt.figure(figsize=(7,5))
+    ax = plt.subplot(111)
+    ax.plot(time, G_tb1, label='V = 0.25')
+    ax.plot(time, G_tb2, label='V = 0.50')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('G2 (kg/m3 s)')
+    plt.tight_layout()
+    plt.show()
+
 
 # Valve module
 class Valve:
@@ -37,7 +116,7 @@ class Valve:
                 "\tYst: " + str(self._Yst))
 
     def setYst(self, Yst):
-        self._Yst = Tst
+        self._Yst = Yst
 
     def calcVolFlux(self, rho1=1.184, p1=PATM, p2=PATM):
         pRatio = p2 / p1
@@ -90,19 +169,46 @@ class Chamber:
                 "\tTemperature: " + str(self._T) + "\n" +
                 "\tDensity: " + str(self._Rho))
 
-    def updateP(self, G1, G2, G3, h1, h2, dt):
+    def updateState(self, G1, G2, G3, h1, h2, dt):
+        # update pressure
         temp = (G1*h1 - (G2+G3)*h2) / (self._V * (CP/RG - 1.0))
         temp = temp * dt
         self._P = self._P + temp
-        self._Rho = self._P / (RG * self._T)
-
-    def updateH(self, G1, G2, G3, h1, h2, dt):
+        # update enthalpy
         temp = G1*h1 - (G2+G3)*h2 + (1.0 - RG/CP)*(G2+G3-G1)*h2
         temp = temp / (self._Rho * self._V * (1.0 - RG/CP))
         temp = temp * dt
         self._H = self._H + temp
         self._T = self._H / CP
         self._Rho = self._P / (RG * self._T)
+
+    def getPressure(self):
+        return self._P
+
+    def getRho(self):
+        return self._Rho
+
+    def getEnthalpy(self):
+        return self._H
+
+    def getTemperature(self):
+        return self._T
+
+def Yst_Control(t):
+    if t < 1.0:
+        ret = t
+    else:
+        ret = 1.0
+    return ret
+
+def Yst_Bypass(t):
+    if t < 6.0:
+        ret = 0.0
+    elif t < 7.0:
+        ret = t - 6.0
+    else:
+        ret = 1.0
+    return ret
 
 main()
 
