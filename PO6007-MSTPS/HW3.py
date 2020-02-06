@@ -151,4 +151,3 @@ ax.set_xlabel('X (m)')
 ax.set_ylabel('Temperature (K)')
 ax.legend(loc=0)
 plt.show()
-
