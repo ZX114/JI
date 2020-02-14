@@ -23,8 +23,10 @@ RG   =  287.0          # J/kg K
 K    =  1.4            # -
 PCR  =  0.528          # -
 P0   =  150000.0       # Pa
-P1   =  140000.0       # Initial Pressure of the Chamber
-P3   =  PATM           # Outlet Pressure
+P1   =  109074.07373321# Initial Pressure of the Chamber
+PO1  =  76300.0
+PO2  =  76300.0
+PO3  =  76300.0
 T0   =  373.0          # K
 T1   =  T0             # Initial Temperature of the Chamber
 H0   =  T0 * CP        # J/kg
@@ -40,21 +42,70 @@ VCB2 =  0.04           # m3
 LV   =  351.0          # kJ/kg
 
 
-def func(x):
-    VA = Valve(CVA, 0.5)
-    VA.setYst(0.95)
-    # return VA.calcVolFlux(RHO1, P1, x) - 0.001e-3
-    return VA.calcVolFlux(RHO0, P0, x) - 0.05e-3
+YST_VA  =  0.9
+YST_VA1 =  0.89945679
+YST_VA2 =  0.89945301
+YST_VA3 =  0.93796938
+
+
+
+def func(yst, x):
+    VA = Valve(CV3, 0.5)
+    VA.setYst(yst)
+    return VA.calcVolFlux(RHO1, P1, x) - 0.001e-3
+    # return VA.calcVolFlux(RHO0, P0, x) - 0.05e-3
 
 
 def main():
-    X = fsolve(func, [130000.0])
-    print(X)
+    # ys = np.arange(0.4,1.01,0.01)
+    # ps = []
+    # for y in ys:
+    #     X = fsolve(func, [100000.0], args=y)
+    #     ps.append(X)
+    # plt.plot(ys,ps)
+    # plt.show()
+
+    # print(fsolve(func, [0.9], args=PO3))
+
+    VA = Valve(CVA, YST_VA)
+    VA1 = Valve(CV1, YST_VA1)
+    VA2 = Valve(CV2, YST_VA2)
+    VA3 = Valve(CV3, YST_VA3)
+    cb = Chamber(VCB1, P1, T1*CP)
+
+    dt = 0.01
+    t = np.arange(0, 10000+dt, dt)
+    pcbs = []
+    Tcbs = []
+
+    pcb = cb.getPressure()
+    rhocb = cb.getRho()
+    Tcb = cb.getTemperature()
+    hcb = cb.getEnthalpy()
+    print(cb)
+    for i in range(len(t)):
+        mva = VA.calcVolFlux(RHO0, P0, pcb)
+        mva1 = VA1.calcVolFlux(rhocb, pcb, PO1)
+        mva2 = VA2.calcVolFlux(rhocb, pcb, PO2)
+        mva3 = VA3.calcVolFlux(rhocb, pcb, PO3)
+
+        cb.updateState(mva, 0, mva1, mva2, mva3, H0, 0, hcb, dt)
+        pcb = cb.getPressure()
+        Tcb = cb.getTemperature()
+        rhocb = cb.getRho()
+        hcb = cb.getEnthalpy()
+
+        pcbs.append(pcb)
+        Tcbs.append(Tcb)
+
+    print(cb)
+    plt.plot(t, pcbs)
+    plt.show()
+    plt.plot(t, Tcbs)
+    plt.show()
 
 
-
-
-
+ 
 # Valve module
 class Valve:
     def __init__(self, Cv=0.01, Yst=0.5):
