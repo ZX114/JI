@@ -30,7 +30,7 @@ PO3  =  76300.0
 T0   =  373.0          # K
 T1   =  T0             # Initial Temperature of the Chamber
 H0   =  T0 * CP        # J/kg
-H1   =  H0             # J/kg
+H1   =  T1 * CP        # J/kg
 RHO0 =  P0 / (T0 * RG) # kg/m3
 RHO1 =  P1 / (T1 * RG) # kg/m3
 CVA  =  5.158e-7       # VA
@@ -38,22 +38,22 @@ CV1  =  4.1452e-8      # VA1
 CV2  =  6.356e-7       # VA2
 CV3  =  1.325e-8       # VA3
 VCB1 =  0.02           # m3
-VCB2 =  0.04           # m3
-LV   =  351.0          # kJ/kg
+VCB2 =  0.01           # m3
+LV   =  351e3          # J/kg
+TINJ =  273.0          # K
+HINJ =  CP * TINJ      # J/kg
 
-
+# initial yst
 YST_VA  =  0.9
 YST_VA1 =  0.89945679
 YST_VA2 =  0.89945301
 YST_VA3 =  0.93796938
 
 
-
 def func(yst, x):
     VA = Valve(CV3, 0.5)
     VA.setYst(yst)
     return VA.calcVolFlux(RHO1, P1, x) - 0.001e-3
-    # return VA.calcVolFlux(RHO0, P0, x) - 0.05e-3
 
 
 def main():
@@ -64,7 +64,6 @@ def main():
     #     ps.append(X)
     # plt.plot(ys,ps)
     # plt.show()
-
     # print(fsolve(func, [0.9], args=PO3))
 
     VA = Valve(CVA, YST_VA)
@@ -74,7 +73,7 @@ def main():
     cb = Chamber(VCB1, P1, T1*CP)
 
     dt = 0.01
-    t = np.arange(0, 10000+dt, dt)
+    t = np.arange(0, 100+dt, dt)
     pcbs = []
     Tcbs = []
 
@@ -89,7 +88,7 @@ def main():
         mva2 = VA2.calcVolFlux(rhocb, pcb, PO2)
         mva3 = VA3.calcVolFlux(rhocb, pcb, PO3)
 
-        cb.updateState(mva, 0, mva1, mva2, mva3, H0, 0, hcb, dt)
+        cb.updateState(mva, inject(t[i]), mva1, mva2, mva3, H0, HINJ, hcb, dt)
         pcb = cb.getPressure()
         Tcb = cb.getTemperature()
         rhocb = cb.getRho()
@@ -98,10 +97,20 @@ def main():
         pcbs.append(pcb)
         Tcbs.append(Tcb)
 
-    print(cb)
-    plt.plot(t, pcbs)
+    fig = plt.figure(figsize=(9,5))
+    ax = plt.subplot(111)
+    ax.plot(t, pcbs, label='Original with V = 0.02 m3')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Pressure (Pa)')
+    plt.tight_layout()
     plt.show()
-    plt.plot(t, Tcbs)
+
+    fig = plt.figure(figsize=(9,5))
+    ax = plt.subplot(111)
+    ax.plot(t, Tcbs, label='Original with V = 0.02 m3')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Temperature (K)')
+    plt.tight_layout()
     plt.show()
 
 
@@ -156,6 +165,7 @@ class Chamber:
         self._P = self._P + temp
         # update enthalpy
         temp = G1*h1 + G2*h2 - (G3+G4+G5)*h3 + (1.0 - RG/CP)*(G3+G4+G5-G1-G2)*h3
+        temp = temp - G2 * LV
         temp = temp / (self._Rho * self._V * (1.0 - RG/CP))
         temp = temp * dt
         self._H = self._H + temp
@@ -174,20 +184,12 @@ class Chamber:
     def getTemperature(self):
         return self._T
 
-def Yst_Control(t):
-    if t < 1.0:
-        ret = t
+def inject(t):
+    if t < 20:
+        return 0.0
+    elif t < 22:
+        return 0.0025e-3
     else:
-        ret = 1.0
-    return ret
-
-def Yst_Bypass(t):
-    if t < 6.0:
-        ret = 0.0
-    elif t < 7.0:
-        ret = t - 6.0
-    else:
-        ret = 1.0
-    return ret
+        return 0.0
 
 main()
