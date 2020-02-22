@@ -6,7 +6,7 @@ from scipy.optimize import fsolve
 import matplotlib as mpl
 # Configurations
 mpl.rcParams['font.family'] = 'serif'
-mpl.rcParams['font.size'] = 16
+mpl.rcParams['font.size'] = 14
 mpl.rcParams['font.weight'] = 'medium'
 mpl.rcParams['font.style'] = 'normal'
 mpl.rcParams['font.serif'] = 'DejaVu Serif'
@@ -66,17 +66,56 @@ def main():
     # plt.show()
     # print(fsolve(func, [0.9], args=PO3))
 
+    t, pcbs1 = helper(VCB1, 0.0, 0.0, 0.0, 0)
+    t, pcbs2 = helper(VCB1, -0.02, -0.01, -0.002, 1)
+    t, pcbs3 = helper(VCB1, 0.02, 0.02, 0.002, 2)
+    t, pcbs4 = helper(VCB2, 0.0, 0.0, 0.0, 0)
+    t, pcbs5 = helper(VCB2, -0.01, -0.01, -0.001, 1)
+    t, pcbs6 = helper(VCB2, 0.01, 0.01, 0.001, 2)
+
+
+    fig = plt.figure(figsize=(9,5))
+    ax = plt.subplot(111)
+    ax.plot(t, pcbs1, label='No control, V = 0.02')
+    ax.plot(t, pcbs2, label='PID control of VA, V = 0.02')
+    ax.plot(t, pcbs3, label='PID control of VA1, V = 0.02')
+    ax.plot(t, pcbs4, label='No control, V = 0.01')
+    ax.plot(t, pcbs5, label='PID control of VA, V = 0.01')
+    ax.plot(t, pcbs6, label='PID control of VA1, V = 0.01')
+    ax.legend()
+    ax.set_xlim(0.0, 100.0)
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Pressure (Pa)')
+    ax.set_ylim(109050, 109170)
+    plt.tight_layout()
+    plt.show()
+
+    # fig = plt.figure(figsize=(9,9))
+    # ax1 = plt.subplot(411)
+    # ax2 = plt.subplot(412)
+    # ax3 = plt.subplot(413)
+    # ax4 = plt.subplot(414)
+    # ax1.plot(t, mvas, label='m_VA', c='k')
+    # ax2.plot(t, mv1s, label='m_VA1', c='k')
+    # ax3.plot(t, mv2s, label='m_VA2', c='k')
+    # ax4.plot(t, mv3s, label='m_VA3', c='k')
+    # ax1.legend();ax2.legend();ax3.legend();ax4.legend()
+    # ax4.set_xlabel('Time (s)')
+    # ax1.set_ylabel(r'$\dot{m} \ (kg/s)$');ax2.set_ylabel(r'$\dot{m} \ (kg/s)$')
+    # ax3.set_ylabel(r'$\dot{m} \ (kg/s)$');ax4.set_ylabel(r'$\dot{m} \ (kg/s)$')
+    # plt.tight_layout()
+    # plt.show()
+
+def helper(Vol, Kp, Ki, Kd, control):
     VA = Valve(CVA, YST_VA)
     VA1 = Valve(CV1, YST_VA1)
     VA2 = Valve(CV2, YST_VA2)
     VA3 = Valve(CV3, YST_VA3)
-    cb = Chamber(VCB1, P1, T1*CP)
-
+    cb = Chamber(Vol, P1, T1*CP)
+    pidva = PID(Kp, Ki, Kd)
     dt = 0.01
     t = np.arange(0, 100+dt, dt)
     pcbs = []
-    Tcbs = []
-
     pcb = cb.getPressure()
     rhocb = cb.getRho()
     Tcb = cb.getTemperature()
@@ -87,33 +126,24 @@ def main():
         mva1 = VA1.calcVolFlux(rhocb, pcb, PO1)
         mva2 = VA2.calcVolFlux(rhocb, pcb, PO2)
         mva3 = VA3.calcVolFlux(rhocb, pcb, PO3)
-
         cb.updateState(mva, inject(t[i]), mva1, mva2, mva3, H0, HINJ, hcb, dt)
+
+        if control == 0:
+            pass
+        elif control == 1:
+            mtva = pidva.calcOutput(cb.getPressure() - pcb, dt)
+            VA.setYst(VA.getYst() + mtva)
+        elif control == 2:
+            mtva1 = pidva.calcOutput(cb.getPressure() - pcb, dt)
+            VA1.setYst(VA1.getYst() + mtva1)
+        else:
+            print("Error", control)
         pcb = cb.getPressure()
         Tcb = cb.getTemperature()
         rhocb = cb.getRho()
         hcb = cb.getEnthalpy()
-
         pcbs.append(pcb)
-        Tcbs.append(Tcb)
-
-    fig = plt.figure(figsize=(9,5))
-    ax = plt.subplot(111)
-    ax.plot(t, pcbs, label='Original with V = 0.02 m3')
-    ax.set_xlabel('Time (s)')
-    ax.set_ylabel('Pressure (Pa)')
-    plt.tight_layout()
-    plt.show()
-
-    fig = plt.figure(figsize=(9,5))
-    ax = plt.subplot(111)
-    ax.plot(t, Tcbs, label='Original with V = 0.02 m3')
-    ax.set_xlabel('Time (s)')
-    ax.set_ylabel('Temperature (K)')
-    plt.tight_layout()
-    plt.show()
-
-
+    return (t, pcbs)
  
 # Valve module
 class Valve:
@@ -127,6 +157,9 @@ class Valve:
 
     def setYst(self, Yst):
         self._Yst = Yst
+
+    def getYst(self):
+        return self._Yst
 
     def calcVolFlux(self, rho1=1.184, p1=PATM, p2=PATM):
         pRatio = p2 / p1
@@ -183,6 +216,25 @@ class Chamber:
 
     def getTemperature(self):
         return self._T
+
+class PID:
+    """docstring for PID"""
+    def __init__(self, Kp=0.1, Ki=0.1, Kd=0.01):
+        self._Kp = Kp
+        self._Ki = Ki
+        self._Kd = Kd
+        self._err = 0.0
+        self._pt1 = 0.0
+        self._pt2 = 0.0
+        self._pt3 = 0.0
+
+    def calcOutput(self, err=0.0, dt=0.01):
+        self._pt1 = self._Kp * err
+        self._pt2 = self._pt2 + self._Ki*0.5*(self._err + err)*dt
+        self._pt3 = self._Kd * (err - self._err) / dt
+        self._err = err
+        ret = self._pt1 + self._pt2 + self._pt3
+        return ret
 
 def inject(t):
     if t < 20:

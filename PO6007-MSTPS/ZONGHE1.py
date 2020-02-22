@@ -40,14 +40,18 @@ def main():
     bypassValv = Valve(Cv=CV2, Yst=0.0)
     tb = Turbine(Ct=CT)
 
-    dt = 0.01
+    dt = 0.001
     time = np.arange(0.0, 10.0+dt, dt)
     p_cb1 = np.zeros(len(time))
     T_cb1 = np.zeros(len(time))
-    G_tb1 = np.zeros(len(time))
+    G2_tb1 = np.zeros(len(time))
+    G1_tb1 = np.zeros(len(time))
+    G3_tb1 = np.zeros(len(time))
     p_cb2 = np.zeros(len(time))
     T_cb2 = np.zeros(len(time))
-    G_tb2 = np.zeros(len(time))
+    G2_tb2 = np.zeros(len(time))
+    G1_tb2 = np.zeros(len(time))
+    G3_tb2 = np.zeros(len(time))
 
     # VCB1
     cb = Chamber(vol=VCB1, p=P1, h=H1)
@@ -60,8 +64,10 @@ def main():
         G3 = bypassValv.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
         cb.updateState(G1, G2, G3, H0, cb.getEnthalpy(), dt)
         p_cb1[it] = cb.getPressure()
-        T_cb1[it] = cb.getTemperature()
-        G_tb1[it] = G2
+        T_cb1[it] = cb.getEnthalpy()
+        G2_tb1[it] = G2
+        G1_tb1[it] = G1
+        G3_tb1[it] = G3
 
     # VCB2
     cb = Chamber(vol=VCB2, p=P1, h=H1)
@@ -74,36 +80,91 @@ def main():
         G3 = bypassValv.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
         cb.updateState(G1, G2, G3, H0, cb.getEnthalpy(), dt)
         p_cb2[it] = cb.getPressure()
-        T_cb2[it] = cb.getTemperature()
-        G_tb2[it] = G2
+        T_cb2[it] = cb.getEnthalpy()
+        G2_tb2[it] = G2
+        G1_tb2[it] = G1
+        G3_tb2[it] = G3
+
+
+
+
+    dt = 0.04
+    time2 = np.arange(0.0, 10.0+dt, dt)
+    p_cb1_dt2 = np.zeros(len(time2))
+    T_cb1_dt2 = np.zeros(len(time2))
+    G2_tb1_dt2 = np.zeros(len(time2))
+    G1_tb1_dt2 = np.zeros(len(time2))
+    G3_tb1_dt2 = np.zeros(len(time2))
+
+    # VCB1
+    cb = Chamber(vol=VCB1, p=P1, h=H1)
+    for it in range(len(time2)):
+        t = time2[it]
+        controlValv.setYst(Yst_Control(t))
+        bypassValv.setYst(Yst_Bypass(t))
+        G1 = controlValv.calcVolFlux(RHO0, P0, cb.getPressure())
+        G2 = tb.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        G3 = bypassValv.calcVolFlux(cb.getRho(), cb.getPressure(), P3)
+        cb.updateState(G1, G2, G3, H0, cb.getEnthalpy(), dt)
+        p_cb1_dt2[it] = cb.getPressure()
+        T_cb1_dt2[it] = cb.getEnthalpy()
+        G2_tb1_dt2[it] = G2
+        G1_tb1_dt2[it] = G1
+        G3_tb1_dt2[it] = G3
+
+
+
+
 
     fig = plt.figure(figsize=(7,5))
     ax = plt.subplot(111)
-    ax.plot(time, p_cb1, label='V = 0.25')
-    ax.plot(time, p_cb2, label='V = 0.50')
+    ax.plot(time, p_cb1, label='dt=0.01')
+    ax.plot(time2, p_cb1_dt2, label='dt=0.04')
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Pressure (Pa)')
+    ax.legend()
     plt.tight_layout()
     plt.show()
 
     fig = plt.figure(figsize=(7,5))
     ax = plt.subplot(111)
-    ax.plot(time, T_cb1, label='V = 0.25')
-    ax.plot(time, T_cb2, label='V = 0.50')
+    ax.plot(time, T_cb1, label='dt=0.01')
+    ax.plot(time2, T_cb1_dt2, label='dt=0.04')
     ax.set_xlabel('Time (s)')
-    ax.set_ylabel('Temperature (K)')
+    ax.set_ylabel('Enthalpy (kJ/kg)')
+    ax.legend()
     plt.tight_layout()
     plt.show()
 
     fig = plt.figure(figsize=(7,5))
     ax = plt.subplot(111)
-    ax.plot(time, G_tb1, label='V = 0.25')
-    ax.plot(time, G_tb2, label='V = 0.50')
+    ax.plot(time, G2_tb1, label='dt=0.01')
+    ax.plot(time2, G2_tb1_dt2, label='dt=0.04')
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('G2 (kg/m3 s)')
+    ax.legend()
     plt.tight_layout()
     plt.show()
 
+    fig = plt.figure(figsize=(7,5))
+    ax = plt.subplot(111)
+    ax.plot(time, G1_tb1, label='dt=0.01')
+    ax.plot(time2, G1_tb1_dt2, label='dt=0.04')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('G1 (kg/m3 s)')
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
+
+    fig = plt.figure(figsize=(7,5))
+    ax = plt.subplot(111)
+    ax.plot(time, G3_tb1, label='dt=0.01')
+    ax.plot(time2, G3_tb1_dt2, label='dt=0.04')
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('G3 (kg/m3 s)')
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
 
 # Valve module
 class Valve:
